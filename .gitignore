@@ -66,3 +66,9 @@ fastlane/test_output
 
 # MacOS
 .DS_Store
+
+# SwifTex
+*/Documents/*.tex
+*/Documents/*.aux
+*/Documents/*.log
+*/Documents/*.pdf
