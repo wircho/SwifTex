@@ -17,10 +17,14 @@ precedencegroup AssociativeAssignmentPrecedence {
 }
 
 prefix operator §
-prefix operator §§
+//prefix operator §§
 
 infix operator ÷: MultiplicationPrecedence
 infix operator ^: PowerPrecedence
+infix operator …: PowerPrecedence
+infix operator *…*: PowerPrecedence
+infix operator **…**: PowerPrecedence
+infix operator ***: PowerPrecedence
 infix operator *=*: AssociativeAssignmentPrecedence
 infix operator *<*: AssociativeAssignmentPrecedence
 infix operator *>*: AssociativeAssignmentPrecedence
@@ -31,6 +35,7 @@ infix operator ≥: AssociativeAssignmentPrecedence
 
 public struct Math {
     fileprivate enum Precedence: Double {
+        case listed = 500
         case assignment = 1000
         case addition = 2000
         case multiplication = 3000
@@ -40,13 +45,13 @@ public struct Math {
         
         var associative: Bool {
             switch self {
-            case .assignment, .addition, .multiplication: return true
+            case .assignment, .addition, .multiplication, .listed: return true
             case .raising, .subscripting, .group: return false
             }
         }
     }
     
-    fileprivate enum Shell: Double {
+    fileprivate enum Shell {
         case letter
         case number
         case bracket
@@ -73,43 +78,43 @@ public struct Math {
 }
 
 public extension Math {
-    public static prefix func §§(_ math: Math) -> Math {
+    public static prefix func §(_ math: Math) -> Math {
         return Math(display: true, displayStyle: false, precedence: math.precedence, singleHeight: math.singleHeight, shell: math.shell, code: math.code)
     }
     
-    public static prefix func §(_ math: Math) -> Math {
-        return math
-    }
+//    public static prefix func §(_ math: Math) -> Math {
+//        return math
+//    }
 }
 
 public extension Math {
-    private init(display: Bool, displayStyle: Bool, run math: [Math]) {
-        self.init(display: display, displayStyle: displayStyle, precedence: math.first?.precedence ?? .group, singleHeight: math.reduce(true) { $0 && $1.singleHeight }, shell: (math.first?.shell.left ?? .bracket, math.last?.shell.right ?? .bracket), code: "{" + math.map { $0.innerCode }.joined(separator: "}{") + "}")
+    fileprivate init(display: Bool, displayStyle: Bool, precedence: Precedence, run math: [Math]) {
+        self.init(display: display, displayStyle: displayStyle, precedence: precedence, singleHeight: math.reduce(true) { $0 && $1.singleHeight }, shell: (math.first?.shell.left ?? .bracket, math.last?.shell.right ?? .bracket), code: math.map { $0.innerCode }.joined(separator: ""))
     }
     
     private init(display: Bool, displayStyle: Bool, list math: [Math]) {
         if math.count <= 1 {
-            self.init(display: display, displayStyle: displayStyle, run: math)
+            self.init(display: display, displayStyle: displayStyle, precedence: math.first?.precedence ?? .group, run: math)
             return
         }
         var commaMath = math
         for i in 0 ..< math.count - 1 {
             commaMath.insert(.comma, at: 2 * i + 1)
         }
-        self.init(display: display, displayStyle: displayStyle, run: commaMath)
+        self.init(display: display, displayStyle: displayStyle, precedence: .listed, run: commaMath)
     }
     
-    private init(display: Bool, displayStyle: Bool, times math: [Math]) {
-        if math.count == 0 {
-            self.init(display: display, displayStyle: displayStyle, run: math)
-            return
-        }
-        var commaMath = math
-        for i in 0 ..< math.count - 1 {
-            commaMath.insert(.times, at: 2 * i + 1)
-        }
-        self.init(display: display, displayStyle: displayStyle, run: commaMath)
-    }
+//    private init(display: Bool, displayStyle: Bool, times math: [Math]) {
+//        if math.count == 0 {
+//            self.init(display: display, displayStyle: displayStyle, run: math)
+//            return
+//        }
+//        var commaMath = math
+//        for i in 0 ..< math.count - 1 {
+//            commaMath.insert(.times, at: 2 * i + 1)
+//        }
+//        self.init(display: display, displayStyle: displayStyle, run: commaMath)
+//    }
     
     public init(display: Bool, _ math: Math ...) {
         self.init(display: display, displayStyle: false, list: math)
@@ -127,9 +132,9 @@ public extension Math {
         self.init(from, .ldots, to)
     }
 
-    public init(run math: Math ...) {
-        self.init(display: false, displayStyle: false, run: math)
-    }
+//    public init(precedence: Precedence, run math: Math ...) {
+//        self.init(display: false, displayStyle: false, precedence: precedence, run: math)
+//    }
     
     // List
     
@@ -159,9 +164,9 @@ public extension Math {
 //        return Math(display: false, displayStyle: false, list: math)
 //    }
     
-    public static func times(_ math: Math ...) -> Math {
-        return Math(display: false, displayStyle: false, times: math)
-    }
+//    public static func times(_ math: Math ...) -> Math {
+//        return Math(display: false, displayStyle: false, times: math)
+//    }
 }
 
 extension Math.Precedence: Comparable {
@@ -199,7 +204,7 @@ extension Math {
         case .flat:
             code = notTall ? "|\(listMath.innerCode)|" : "\\left|\(listMath.innerCode)\\right|"
         }
-        return Math(display: false, displayStyle: false, precedence: .group, singleHeight: notTall, shell: (.bracket, .bracket), code: code)
+        return Math(display: false, displayStyle: false, precedence: .group, singleHeight: false, shell: (.bracket, .bracket), code: code)
     }
     
     public static func round(_ math: Math ...) -> Math {
@@ -286,23 +291,49 @@ extension Math {
         )
     }
     
+    static func multiplyGrouped(lhs groupedLHS: Math, rhs groupedRHS: Math, symbol: String) -> Math {
+        return Math(
+            display: groupedLHS.display,
+            displayStyle: false,
+            precedence: .multiplication,
+            singleHeight: groupedLHS.singleHeight && groupedRHS.singleHeight,
+            shell: (groupedLHS.shell.left, groupedRHS.shell.right),
+            code: groupedLHS.innerCode + symbol + groupedRHS.innerCode
+        )
+    }
+    
+    static func multiplyGrouped(lhs groupedLHS: Math, rhs groupedRHS: Math, useTimes: Bool = false) -> Math {
+        let times: String
+        switch (useTimes, groupedLHS.shell.right, groupedRHS.shell.left) {
+        case (_, .fraction, .fraction): times = "\\,"
+        case (true, _, _), (_, .number, .number): times = "\\times "
+        default: times = " "
+        }
+        return multiplyGrouped(lhs: groupedLHS, rhs: groupedRHS, symbol: times)
+    }
+    
     public static func *(lhs: Math, rhs: Math) -> Math {
         let groupedLHS = Math.group(lhs, for: .multiplication)
         let groupedRHS = Math.group(rhs, for: .multiplication)
-        let times: String
-        switch (groupedLHS.shell.right, groupedRHS.shell.left) {
-        case (.fraction, .fraction): times = "{\\,}"
-        case (.number, .number): times = "{\\times}"
-        default: times = " "
-        }
-        return Math(
-            display: lhs.display,
-            displayStyle: false,
-            precedence: .multiplication,
-            singleHeight: lhs.singleHeight && rhs.singleHeight,
-            shell: (groupedLHS.shell.left, groupedRHS.shell.right),
-            code: groupedLHS.innerCode + times + groupedRHS.innerCode
-        )
+        return multiplyGrouped(lhs: groupedLHS, rhs: groupedRHS)
+    }
+    
+    public static func ***(lhs: Math, rhs: Math) -> Math {
+        let groupedLHS = Math.group(lhs, for: .multiplication)
+        let groupedRHS = Math.group(rhs, for: .multiplication)
+        return multiplyGrouped(lhs: groupedLHS, rhs: groupedRHS, useTimes: true)
+    }
+    
+    public static func *…*(lhs: Math, rhs: Math) -> Math {
+        let groupedLHS = Math.group(lhs, for: .multiplication)
+        let groupedRHS = Math.group(rhs, for: .multiplication)
+        return multiplyGrouped(lhs: groupedLHS, rhs: groupedRHS, symbol: "\\,\\cdots\\,")
+    }
+    
+    public static func **…**(lhs: Math, rhs: Math) -> Math {
+        let groupedLHS = Math.group(lhs, for: .multiplication)
+        let groupedRHS = Math.group(rhs, for: .multiplication)
+        return multiplyGrouped(lhs: groupedLHS, rhs: groupedRHS, symbol: "\\,\\times\\,\\cdots\\,\\times\\,")
     }
     
     public static func /(lhs: Math, rhs: Math) -> Math {
@@ -338,7 +369,7 @@ extension Math {
             precedence: .raising,
             singleHeight: false,
             shell: (groupedLHS.shell.left, .exponent),
-            code: lhsCode + " ^ {" + rhs.innerCode + "}"
+            code: lhsCode + "^{" + rhs.innerCode + "}"
         )
     }
     
@@ -368,11 +399,11 @@ extension Math {
     }
     
     public static func <=(lhs: Math, rhs: Math) -> Math {
-        return assignOrCompare(lhs: lhs, rhs: rhs, op: "{\\leq}")
+        return assignOrCompare(lhs: lhs, rhs: rhs, op: "\\leq ")
     }
     
     public static func >=(lhs: Math, rhs: Math) -> Math {
-        return assignOrCompare(lhs: lhs, rhs: rhs, op: "{\\geq}")
+        return assignOrCompare(lhs: lhs, rhs: rhs, op: "\\geq ")
     }
     
     public static func *<*(lhs: Math, rhs: Math) -> Math {
@@ -423,7 +454,7 @@ public extension Math {
             precedence: .subscripting,
             singleHeight: false,
             shell: (groupedSelf.shell.left, .exponent),
-            code: "{" + groupedSelf.innerCode + "} _ {" + listRHS.innerCode + "}"
+            code: groupedSelf.innerCode + "_{" + listRHS.innerCode + "}"
         )
     }
     
@@ -432,26 +463,30 @@ public extension Math {
     }
     
     public func of(_ math: Math ...) -> Math {
-        return Math(run: self, Math.bracket(.round, math))
+        return Math(display: false, displayStyle: false, precedence: .group, run: [self, Math.bracket(.round, math)])
     }
     
     public func inSet(_ from: Math, to: Math) -> Math {
-        return Math(run: self, .in, .curly(Math(display: false, displayStyle: false, list: [from, .ldots, to])))
+        return Math(display: false, displayStyle: false, precedence: .multiplication, run: [self, .in, .curly(Math(display: false, displayStyle: false, list: [from, .ldots, to]))])
     }
     
     public var abs: Math {
         return Math.abs(self)
     }
+    
+    public func det(`for` subs: Math) -> Math {
+        return Math.det(self, for: subs)
+    }
 }
 
 public extension Math {
-    public static let ldots = Math(display: false, displayStyle: false, precedence: .group, singleHeight: true, shell: (.symbol, .symbol), code: "\\ldots")
+    public static let ldots = Math(display: false, displayStyle: false, precedence: .group, singleHeight: true, shell: (.symbol, .symbol), code: "\\ldots ")
     public static let comma = Math(display: false, displayStyle: false, precedence: .group, singleHeight: true, shell: (.symbol, .symbol), code: ",\\,")
-    public static let times = Math(display: false, displayStyle: false, precedence: .group, singleHeight: true, shell: (.symbol, .symbol), code: "\\times")
-    public static let `in` = Math(display: false, displayStyle: false, precedence: .group, singleHeight: true, shell: (.symbol, .symbol), code: "{\\in}")
-    public static let det = Math(display: false, displayStyle: false, precedence: .group, singleHeight: true, shell: (.symbol, .symbol), code: "{\\det}")
-    public static let sign = Math(display: false, displayStyle: false, precedence: .group, singleHeight: true, shell: (.symbol, .symbol), code: "{\\mathrm{sign}}")
-    public static let sigma = Math(display: false, displayStyle: false, precedence: .group, singleHeight: true, shell: (.symbol, .symbol), code: "{\\sigma}")
+    public static let times = Math(display: false, displayStyle: false, precedence: .group, singleHeight: true, shell: (.symbol, .symbol), code: "\\times ")
+    public static let `in` = Math(display: false, displayStyle: false, precedence: .group, singleHeight: true, shell: (.symbol, .symbol), code: "\\in ")
+    public static let det = Math(display: false, displayStyle: false, precedence: .group, singleHeight: true, shell: (.symbol, .symbol), code: "\\det ")
+    public static let sign = Math(display: false, displayStyle: false, precedence: .group, singleHeight: true, shell: (.symbol, .symbol), code: "\\mathrm{sign}")
+    public static let sigma = Math(display: false, displayStyle: false, precedence: .group, singleHeight: true, shell: (.symbol, .symbol), code: "\\sigma ")
 }
 
 public extension Math {
@@ -459,9 +494,9 @@ public extension Math {
 //        return Math(from, .ldots, to)
 //    }
     
-    public static func times(_ from: Math, to: Math) -> Math {
-        return .times(from, .ldots, to)
-    }
+//    public static func times(_ from: Math, to: Math) -> Math {
+//        return .times(from, .ldots, to)
+//    }
     
     public static func set(_ math: Math ...) -> Math {
         return curly(Math(display: false, displayStyle: false, list: math))
@@ -481,13 +516,13 @@ public extension Math {
     
     public static func det(_ entry: Math, `for` subs: Math? = nil) -> Math  {
         guard let subs = subs else {
-            return Math(run: .det, Math.tallRound(entry))
+            return Math.det.of(entry)
         }
-        return Math(run: .det, Math.tallRound(entry).sub(subs))
+        return Math.det.of(entry).sub(subs)
     }
     
     public static func sign(_ math: Math) -> Math  {
-        return Math(run: .sign, Math.round(math))
+        return Math.sign.of(math)
     }
     
     public static func abs(_ math: Math ...) -> Math {

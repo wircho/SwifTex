@@ -31,10 +31,10 @@ struct DeterminantIdentityPaper {
                 $0.theorem(
                     "The Lindström–Gessel–Viennot lemma",
                     """
-                    Let \(G) be a directed acyclic graph, and let \(a.sub(1, to: n)), \(b.sub(1, to: n)) (\(n ≥ 1)) be distinct vertices of \(G) so that the set \(P.sub(i,j)) of directed paths between \(a.sub(i)) and \(b.sub(j)) is finite for all \([i,j].inSet(1, to: n)). For every permutation \(sigma) of \(Math.set(1, to: n)), let \(PP.sub(sigma)) denote the set of all tuples \(Math.tuple(p.sub(1), to: p.sub(n))) of non-intersecting (no two of them share a vertex) paths in \(Math.times(P.sub(1,sigma.of(1)), to: P.sub(n,sigma.of(n)))). Then
-                    \(§§(
-                        .det(P.sub(i,j).abs, for: 1 ≤ [i,j] ≤ n) *=* .sum(sigma, of: .sign(sigma) * PP.sub(sigma).abs)
-                    ))
+                    Let \(G) be a directed acyclic graph, and let \(a.sub(1, to: n)), \(b.sub(1, to: n)) (\(n ≥ 1)) be distinct vertices of \(G) so that the set \(P.sub(i,j)) of directed paths between \(a.sub(i)) and \(b.sub(j)) is finite for all \([i,j].inSet(1, to: n)). For every permutation \(sigma) of \(Math.set(1, to: n)), let \(PP.sub(sigma)) denote the set of all tuples \(Math.tuple(p.sub(1), to: p.sub(n))) of non-intersecting (no two of them share a vertex) paths in \(P.sub(1,sigma.of(1)) **…** P.sub(n,sigma.of(n))). Then
+                    \(§[
+                        P.sub(i,j).abs.det(for: 1 ≤ [i,j] ≤ n) *=* .sum(sigma, of: .sign(sigma) * PP.sub(sigma).abs)
+                    ])
                     """
                 )
             }
