@@ -10,6 +10,6 @@ prefix operator §
 
 public extension Math {
     public static prefix func §(_ math: Math) -> Math {
-        return Math(display: true, precedence: math.precedence, singleHeight: math.singleHeight, shell: math.shell, code: math.code)
+        return Math(display: true, content: math.content)
     }
 }

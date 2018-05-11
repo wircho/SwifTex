@@ -7,16 +7,19 @@
 //
 
 internal extension Math {
-    internal init(display: Bool? = nil, displayStyle: Bool = false, list math: [Math]) {
-        if math.count <= 1 {
-            self.init(display: display, displayStyle: displayStyle, precedence: math.first?.precedence ?? .group, concat: math)
+    internal init(display optionalDisplay: Bool? = nil, displayStyle: Bool = false, list maths: [Math]) {
+        let display = optionalDisplay ?? maths.first?.display ?? false
+        guard maths.count > 0 else {
+            self.init(display: display, displayStyle: displayStyle, content: .literal(.empty))
             return
         }
-        var commaMath = math
-        for i in 0 ..< math.count - 1 {
-            commaMath.insert(.comma, at: 2 * i + 1)
+        var mutableMaths = maths
+        let last = mutableMaths.removeLast()
+        guard mutableMaths.count > 0 else {
+            self.init(display: display, displayStyle: displayStyle, content: last.content)
+            return
         }
-        self.init(display: display, displayStyle: displayStyle, precedence: .list, concat: commaMath)
+        self.init(display: display, displayStyle: displayStyle, content: .operation(.other(.comma), lhs: Math(list: mutableMaths).content, rhs: last.content))
     }
 }
 
@@ -28,6 +31,10 @@ public extension Math {
     
     public static func display(_ math: Math ...) -> Math {
         return Math(display: true, list: math)
+    }
+    
+    public static func displayStyle(_ math: Math ...) -> Math {
+        return Math(displayStyle: true, list: math)
     }
 }
 

@@ -6,15 +6,15 @@
 //  Copyright © 2018 Wircho. All rights reserved.
 //
 
-fileprivate extension Bracket {
-    fileprivate func mathEnclose(_ string: String) -> String {
+internal extension Bracket {
+    internal func mathEnclose(_ string: String) -> String {
         switch self {
         case .curly: return "\\{\(string)\\}"
         case .square, .round, .flat: return enclose(string)
         }
     }
     
-    fileprivate func mathTallEnclose(_ string: String) -> String {
+    internal func mathTallEnclose(_ string: String) -> String {
         switch self {
         case .curly: return "\\left\\{\(string)\\right\\}"
         case .square: return "\\left[\(string)\\right]"
@@ -25,18 +25,10 @@ fileprivate extension Bracket {
 }
 
 extension Math {
-    internal static func bracket(_ type: Bracket, display: Bool? = nil, displayStyle: Bool = false, tall: Bool = false, _ math: [Math]) -> Math {
-        let listMath = Math(list: math)
-        let notTall = !tall && listMath.singleHeight
-        let code = notTall ? type.mathEnclose(listMath.innerCode) : type.mathTallEnclose(listMath.innerCode)
-        return Math(
-            display: display ?? math.first?.display ?? false,
-            displayStyle: displayStyle,
-            precedence: .group,
-            singleHeight: false,
-            shell: (.bracket, .bracket),
-            code: code
-        )
+    internal static func bracket(_ type: Bracket, display: Bool? = nil, displayStyle: Bool = false, tall forceTall: Bool = false, _ maths: [Math]) -> Math {
+        let listMath = Math(list: maths)
+        let tall = forceTall || !listMath.short
+        return Math(display: display ?? listMath.display, displayStyle: displayStyle, content: .bracket(type, tall: tall, inner: listMath.content))
     }
     
     public static func round(display: Bool? = nil, displayStyle: Bool = false, _ math: Math ...) -> Math {
