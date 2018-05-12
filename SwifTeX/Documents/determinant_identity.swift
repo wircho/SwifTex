@@ -50,13 +50,7 @@ struct DeterminantIdentityPaper {
                     It is thus sufficient to prove that the last sum equals zero. One way to do this is to show the existence of a sign-reversing involution on \(PP - QQ). That is, a function \(f.function(from: PP - QQ, to: PP - QQ)) satisfying:
                     
                     """
-                    
-                    
-                    
                     $0 <- Itemize {
-                        $0 <- Item("Name") {
-                            $0 <- "Some item"
-                        }
                         $0 <- "\(Math.sign.of(f.of(pp)) == -.sign(pp)) for all \(pp.isIn(PP - QQ))"
                         $0 <- "\(f.of(f.of(pp)) == pp) for all \(pp.isIn(PP - QQ))"
                     }
