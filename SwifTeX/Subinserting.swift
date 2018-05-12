@@ -11,7 +11,5 @@ public protocol Subinsertable: InsertableBase {
 }
 
 public func <-<T: Subinsertable>(document: T.Parent, insertable: T) {
-    // TODO: ABSTRACT BOTH <- OUT
-    if let prefix = document.prefix { document.innerDocument.innerContent += prefix }
-    insertable.insert(into: document.innerDocument)
+    insert(into: document, insertable: insertable)
 }
