@@ -23,8 +23,8 @@ private let sigma = Math.sigma
 struct DeterminantIdentityPaper {
     static func main() -> Document {
         let doc = Document(.article, at: #file + ".tex")
-        doc.title("A Determinant Identity To Rule Them All", author: "Adolfo Rodríguez")
-        doc.abstract(
+        doc <- Title("A Determinant Identity To Rule Them All", author: "Adolfo Rodríguez")
+        doc <- Abstract(
             """
             This is the abstract. Abstract text!
             """

@@ -1,5 +1,5 @@
 //
-//  Enclosing.swift
+//  Enclose.swift
 //  SwifTeX
 //
 //  Created by Adolfo Rodriguez on 2018-05-05.

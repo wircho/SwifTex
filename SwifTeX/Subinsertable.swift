@@ -1,5 +1,5 @@
 //
-//  Subinserting.swift
+//  Subinsertable.swift
 //  SwifTeX
 //
 //  Created by Adolfo Rodriguez on 2018-05-12.

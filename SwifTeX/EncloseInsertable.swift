@@ -8,8 +8,8 @@
 
 public protocol EncloseInsertable: Insertable {
     associatedtype DocumentType: EnclosedDocument
-    var name: String { get }
-    var content: (DocumentType) -> Void
+    static var name: String { get }
+    var content: (DocumentType) -> Void { get }
 }
 
 public protocol EnclosedDocument: DocumentProtocol {
@@ -18,7 +18,7 @@ public protocol EnclosedDocument: DocumentProtocol {
 
 public extension EncloseInsertable {
     public func insert(into document: Document) {
-        document.enclose(name) {
+        document.enclose(Self.name) {
             content(Self.DocumentType(innerDocument: $0))
         }
     }

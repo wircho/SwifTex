@@ -8,26 +8,18 @@
 
 public struct Itemize: EncloseInsertable {
     public let content: (ItemizeDocument) -> Void
-    public let name = "itemize"
+    public static let name = "itemize"
 }
 
 public struct ItemizeDocument: EnclosedDocument {
     public let innerDocument: Document
     public let prefix: String? = "\\item"
+    public init(innerDocument: Document) { self.innerDocument = innerDocument }
 }
 
 public struct Item {
     public let name: String?
     public let content: (ItemDocument) -> Void
-    public init(_ name: String? = nil, content: @escaping (ItemDocument) -> Void) {
-        self.name = name
-        self.content = content
-    }
-}
-
-public struct ItemDocument: DocumentProtocol {
-    public let innerDocument: Document
-    public let prefix: String? = nil
 }
 
 extension Item: Subinsertable {
@@ -36,5 +28,10 @@ extension Item: Subinsertable {
         if let name = name { document <!- "[\(name)]" }
         content(ItemDocument(innerDocument: document))
     }
+}
+
+public struct ItemDocument: DocumentProtocol {
+    public let innerDocument: Document
+    public let prefix: String? = nil
 }
 

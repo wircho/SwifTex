@@ -6,33 +6,19 @@
 //  Copyright © 2018 Wircho. All rights reserved.
 //
 
-public struct Enumerate {
-    internal let content: (EnumerateDocument) -> Void
+public struct Enumerate: EncloseInsertable {
+    public let content: (EnumerateDocument) -> Void
+    public static let name = "enumerate"
 }
 
-public struct EnumerateDocument: DocumentProtocol {
+public struct EnumerateDocument: EnclosedDocument {
     public let innerDocument: Document
     public let prefix: String? = "\\item"
-}
-
-extension Enumerate: Insertable {
-    public func insert(into document: Document) {
-        document.enclose("enumerate") {
-            content(EnumerateDocument(innerDocument: $0))
-        }
-    }
+    public init(innerDocument: Document) { self.innerDocument = innerDocument }
 }
 
 public struct Number {
     public let content: (NumberDocument) -> Void
-    public init(content: @escaping (NumberDocument) -> Void) {
-        self.content = content
-    }
-}
-
-public struct NumberDocument: DocumentProtocol {
-    public let innerDocument: Document
-    public let prefix: String? = nil
 }
 
 extension Number: Subinsertable {
@@ -40,4 +26,9 @@ extension Number: Subinsertable {
     public func insert(into document: Document) {
         content(NumberDocument(innerDocument: document))
     }
+}
+
+public struct NumberDocument: DocumentProtocol {
+    public let innerDocument: Document
+    public let prefix: String? = nil
 }

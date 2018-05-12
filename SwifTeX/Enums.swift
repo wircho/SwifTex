@@ -48,3 +48,22 @@ extension NumberedType: RawRepresentable {
         self = .area(area)
     }
 }
+
+public enum Bracket {
+    case curly
+    case square
+    case round
+    case flat
+}
+
+internal extension Bracket {
+    internal func enclose(_ string: String) -> String {
+        switch self {
+        case .curly: return "{\(string)}"
+        case .square: return "[\(string)]"
+        case .round: return "(\(string))"
+        case .flat: return "|\(string)|"
+        }
+    }
+}
+
