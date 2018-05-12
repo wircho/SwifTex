@@ -24,7 +24,7 @@ public struct Title: Subinsertable {
     }
 }
 
-public struct Abstract: EncloseInsertable {
+public struct Abstract: EncloseSubinsertable {
     public let content: (AbstractDocument) -> Void
     public static let name = "abstract"
 }
