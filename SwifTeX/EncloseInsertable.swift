@@ -6,7 +6,7 @@
 //  Copyright © 2018 Wircho. All rights reserved.
 //
 
-public protocol EncloseInsertable: Insertable {
+public protocol EncloseInsertableBase: InsertableBase {
     associatedtype DocumentType: EnclosedDocument
     static var name: String { get }
     var content: (DocumentType) -> Void { get }
@@ -16,10 +16,13 @@ public protocol EnclosedDocument: DocumentProtocol {
     init(innerDocument: Document)
 }
 
-public extension EncloseInsertable {
+public extension EncloseInsertableBase {
     public func insert(into document: Document) {
         document.enclose(Self.name) {
             content(Self.DocumentType(innerDocument: $0))
         }
     }
 }
+
+public protocol EncloseInsertable: EncloseInsertableBase, Insertable { }
+public protocol EncloseSubinsertable: EncloseInsertableBase, Subinsertable { }
