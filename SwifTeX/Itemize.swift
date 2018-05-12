@@ -7,7 +7,6 @@
 //
 
 public struct Itemize: EncloseInsertable {
-    typealias DocumentType = ItemizeDocument
     public let content: (ItemizeDocument) -> Void
     public let name = "itemize"
 }
