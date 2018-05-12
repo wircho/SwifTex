@@ -6,7 +6,7 @@
 //  Copyright © 2018 Wircho. All rights reserved.
 //
 
-public struct Itemize {
+public struct Itemize: EncloseInsertable {
     typealias DocumentType = ItemizeDocument
     public let content: (ItemizeDocument) -> Void
     public let name = "itemize"
