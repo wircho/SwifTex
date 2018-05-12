@@ -7,20 +7,14 @@
 //
 
 public struct Itemize {
-    internal let content: (ItemizeDocument) -> Void
+    typealias DocumentType = ItemizeDocument
+    public let content: (ItemizeDocument) -> Void
+    public let name = "itemize"
 }
 
-public struct ItemizeDocument: DocumentProtocol {
+public struct ItemizeDocument: EnclosedDocument {
     public let innerDocument: Document
     public let prefix: String? = "\\item"
-}
-
-extension Itemize: Insertable {
-    public func insert(into document: Document) {
-        document.enclose("itemize") {
-            content(ItemizeDocument(innerDocument: $0))
-        }
-    }
 }
 
 public struct Item {
