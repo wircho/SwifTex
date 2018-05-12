@@ -21,7 +21,6 @@ extension Itemize: Insertable {
             content(ItemizeDocument(innerDocument: $0))
         }
     }
-    public var escaped: Itemize { return self }
 }
 
 public struct Item {
@@ -44,6 +43,5 @@ extension Item: Subinsertable {
         if let name = name { document <!- "[\(name)]" }
         content(ItemDocument(innerDocument: document))
     }
-    public var escaped: Item { return self }
 }
 
