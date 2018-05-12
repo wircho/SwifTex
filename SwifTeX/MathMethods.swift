@@ -18,6 +18,10 @@ public extension Math {
     public func sub(_ from: Math, to: Math) -> Math {
         return Math(sub(math: from), to: sub(math: to))
     }
+    
+    public func sub(_ from: Math, timesTo to: Math) -> Math {
+        return sub(math: from) **…** sub(math: to)
+    }
 }
 
 public extension Math {
@@ -34,6 +38,14 @@ public extension Math {
 public extension Math {
     public func isIn(_ math: Math) -> Math  {
         return Math(display: display, content: Math.Content(inner: .operation(.other(.isIn), lhs: self.content, rhs: math.content), shell: .none))
+    }
+    
+    public func isSubset(of math: Math) -> Math  {
+        return Math(display: display, content: Math.Content(inner: .operation(.other(.isSubset), lhs: self.content, rhs: math.content), shell: .none))
+    }
+    
+    public func isSubsetOrEqual(to math: Math) -> Math  {
+        return Math(display: display, content: Math.Content(inner: .operation(.other(.isSubsetOrEqual), lhs: self.content, rhs: math.content), shell: .none))
     }
 }
 
@@ -64,3 +76,11 @@ public extension Array where Element == Math {
         return Math(array: self).isIn(set)
     }
 }
+
+public extension Math {
+    public func function(from: Math, to: Math) -> Math {
+        return Math(display: display, content: .operation(.other(.colon), lhs: content, rhs: .operation(.other(.rightArrow), lhs: from.content, rhs: to.content)))
+    }
+}
+
+

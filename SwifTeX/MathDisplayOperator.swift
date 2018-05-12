@@ -13,3 +13,9 @@ public extension Math {
         return Math(display: true, content: math.content)
     }
 }
+
+public extension PrintedMath {
+    public static prefix func §(_ printed: PrintedMath) -> PrintedMath {
+        return PrintedMath(math: Math(display: true, content: printed.math.content), ending: printed.ending)
+    }
+}

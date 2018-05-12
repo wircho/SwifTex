@@ -9,13 +9,13 @@
 
 extension Math: ExpressibleByIntegerLiteral {
     public init(integerLiteral value: Int) {
-        self.init(display: false, displayStyle: false, content: .literal(Math.Literal(code: "\(value)", short: true, single: true, codeEnd: (.number, .number), renderEnd: (.number, .number))))
+        self.init(display: false, displayStyle: false, content: .literal(Math.Literal(code: "\(value)", short: true, single: value >= 0, codeEnd: (.number, .number), renderEnd: (.number, .number))))
     }
 }
 
 extension Math: ExpressibleByFloatLiteral {
     public init(floatLiteral value: Float) {
-        self.init(display: false, displayStyle: false, content: .literal(Math.Literal(code: "\(value)", short: true, single: true, codeEnd: (.number, .number), renderEnd: (.number, .number))))
+        self.init(display: false, displayStyle: false, content: .literal(Math.Literal(code: "\(value)", short: true, single: value >= 0, codeEnd: (.number, .number), renderEnd: (.number, .number))))
     }
 }
 

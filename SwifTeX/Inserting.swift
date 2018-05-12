@@ -9,14 +9,30 @@
 infix operator <-: AssignmentPrecedence
 infix operator <!-: AssignmentPrecedence
 
-public extension Document {
-    
-    public static func <!-(document: Document, text: String) {
-        document.innerContent += " " + text
-    }
-    
-    public static func <-(document: Document, text: String) {
-        document.innerContent += " " + escape(text)
-    }
-    
+public protocol DocumentProtocol {
+    var innerDocument: Document { get }
+    var prefix: String? { get }
+}
+extension Document: DocumentProtocol {
+    public var innerDocument: Document { return self }
+    public var prefix: String? { return nil }
+}
+
+public protocol InsertableBase {
+    func insert(into document: Document)
+}
+
+public protocol Insertable: InsertableBase { }
+
+extension String: Insertable {
+    public func insert(into document: Document) { document.innerContent += " " + escape(self) }
+}
+
+public func <!-(document: Document, string: String) {
+    document.innerContent += string
+}
+
+public func <-<T: Insertable>(document: DocumentProtocol, insertable: T) {
+    if let prefix = document.prefix { document.innerDocument.innerContent += prefix }
+    insertable.insert(into: document.innerDocument)
 }

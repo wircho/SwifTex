@@ -95,9 +95,9 @@ internal extension Math.Operation {
             case let .bracket(bracket, _, _):
                 switch bracket {
                 case .round: return join(lhs, rhs)
-                case .flat, .square, .curly: return join(lhs, Math.Literal.space, rhs)
+                case .flat, .square, .curly: return join(lhs/*, Math.Literal.space*/, rhs)
                 }
-            case .literal, .operation, .prefix: return join(lhs, Math.Literal.space, rhs)
+            case .literal, .operation, .prefix: return join(lhs/*, Math.Literal.space*/, rhs)
             }
         case .fraction: return join(Math.Literal.frac, lhs, rhs)
         case let .multiplication(separator):
@@ -116,15 +116,44 @@ internal extension Math.Operation {
 }
 
 extension Math: CustomStringConvertible {
-    private var begin: String {
+    fileprivate var begin: String {
         return display ? "$$" : "$"
     }
     
-    private var end: String {
+    fileprivate var end: String {
         return display ? "$$" : "$"
     }
     
     public var description: String {
         return literal(begin + content.code + end)
+    }
+}
+
+public struct PrintedMath: CustomStringConvertible {
+    internal let math: Math
+    internal let ending: String
+    
+    public var description: String {
+        return literal(math.begin + math.content.code + ending + math.end)
+    }
+}
+
+public extension Math {
+    public var comma: PrintedMath {
+        return PrintedMath(math: self, ending: ",")
+    }
+    
+    public var period: PrintedMath {
+        return PrintedMath(math: self, ending: ".")
+    }
+}
+
+public extension Array where Element == Math {
+    public var comma: PrintedMath {
+        return Math(array: self).comma
+    }
+    
+    public var period: PrintedMath {
+        return Math(array: self).period
     }
 }

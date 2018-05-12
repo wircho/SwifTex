@@ -14,6 +14,7 @@ precedencegroup PowerPrecedence {
 precedencegroup AssociativeAssignmentPrecedence {
     associativity: right
     higherThan: AssignmentPrecedence
+    lowerThan: LogicalDisjunctionPrecedence
 }
 
 infix operator ÷: MultiplicationPrecedence
@@ -230,6 +231,10 @@ internal extension Math.Content {
         return operation(.other(.equals), lhs: lhs, rhs: rhs)
     }
     
+    internal static func <-(lhs: Math.Content, rhs: Math.Content) -> Math.Content {
+        return operation(.other(.assign), lhs: lhs, rhs: rhs)
+    }
+    
     internal static func <(lhs: Math.Content, rhs: Math.Content) -> Math.Content {
         return operation(.other(.lt), lhs: lhs, rhs: rhs)
     }
@@ -298,6 +303,10 @@ extension Math {
     
     public static func ==(lhs: Math, rhs: Math) -> Math {
         return Math(display: lhs.display, content: lhs.content == rhs.content)
+    }
+    
+    public static func <-(lhs: Math, rhs: Math) -> Math {
+        return Math(display: lhs.display, content: lhs.content <- rhs.content)
     }
     
     public static func <(lhs: Math, rhs: Math) -> Math {

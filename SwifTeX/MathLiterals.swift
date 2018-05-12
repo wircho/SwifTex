@@ -34,11 +34,15 @@ internal extension Math.Literal {
     internal static let over = Math.Literal.symbol("/")
     internal static let minus = Math.Literal.symbol("-")
     internal static let space = Math.Literal.symbol("\\,")
+    internal static let colon = Math.Literal.symbol(":")
     
     internal static let leq = Math.Literal.backslash("leq", renderEnd: (.symbol, .symbol))
     internal static let geq = Math.Literal.backslash("geq", renderEnd: (.symbol, .symbol))
     internal static let times = Math.Literal.backslash("times", renderEnd: (.symbol, .symbol))
     internal static let isIn = Math.Literal.backslash("in", renderEnd: (.symbol, .symbol))
+    internal static let isSubset = Math.Literal.backslash("subset", renderEnd: (.symbol, .symbol))
+    internal static let isSubsetOrEqual = Math.Literal.backslash("subseteq", renderEnd: (.symbol, .symbol))
+    internal static let rightArrow = Math.Literal.backslash("rightarrow", renderEnd: (.symbol, .symbol))
     
     internal static let frac = Math.Literal.backslash("frac", renderEnd: (.fraction, .fraction))
     internal static let det = Math.Literal.backslash("det", renderEnd: (.applyingLetter, .applyingLetter))
@@ -55,6 +59,10 @@ internal extension Math.Literal {
     
     
     internal static let sum = Math.Literal(code: "\\sum", short: false, single: true, codeEnd: (.symbol, .letter), renderEnd: (.symbol, .symbol))
+    internal static let bigcup = Math.Literal(code: "\\bigcup", short: false, single: true, codeEnd: (.symbol, .letter), renderEnd: (.symbol, .symbol))
+    internal static let bigcap = Math.Literal(code: "\\bigcap", short: false, single: true, codeEnd: (.symbol, .letter), renderEnd: (.symbol, .symbol))
+    
+    internal static let assign = Math.Literal(code: ":=", short: true, single: false, codeEnd: (.symbol, .symbol), renderEnd: (.symbol, .symbol))
     
     internal static let toThe = Math.Literal.symbol("^")
     internal static let sub = Math.Literal.symbol("_")
@@ -65,4 +73,5 @@ public extension Math {
     public static let det = Math(content: .literal(.det))
     public static let sign = Math(content: .literal(.sign))
     public static let sigma = Math(content: .literal(.sigma))
+    public static let empty = Math(content: .literal(.empty))
 }

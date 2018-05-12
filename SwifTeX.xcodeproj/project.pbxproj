@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3E24861520A53A8A000788AB /* MathMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E24861420A53A8A000788AB /* MathMethods.swift */; };
+		3E24861720A62B23000788AB /* Itemize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E24861620A62B23000788AB /* Itemize.swift */; };
 		3E2DF06620A4C4A800D459A4 /* MathList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E60397A20A3524B00743C7F /* MathList.swift */; };
 		3E2DF06720A4C4AC00D459A4 /* MathLiteralExpressible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E60398220A35A8A00743C7F /* MathLiteralExpressible.swift */; };
 		3E2DF06820A4C4B000D459A4 /* MathLiterals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E60398620A37F6C00743C7F /* MathLiterals.swift */; };
@@ -19,6 +20,7 @@
 		3E60398520A35EF700743C7F /* MathOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E60398420A35EF700743C7F /* MathOperators.swift */; };
 		3E60398920A381B000743C7F /* MathFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E60398820A381B000743C7F /* MathFunctions.swift */; };
 		3E68573920A4C59700516993 /* MathContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E68573820A4C59700516993 /* MathContent.swift */; };
+		3E9214B920A7243A000F0FD0 /* Subinserting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9214B820A7243A000F0FD0 /* Subinserting.swift */; };
 		3E98FBE8209B6360005A8D53 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E98FBE7209B6360005A8D53 /* main.swift */; };
 		3E98FBEF209B6372005A8D53 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E98FBEE209B6372005A8D53 /* Document.swift */; };
 		3EE5ECE5209D0E1300914E9F /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE5ECE4209D0E1300914E9F /* Enums.swift */; };
@@ -46,6 +48,7 @@
 
 /* Begin PBXFileReference section */
 		3E24861420A53A8A000788AB /* MathMethods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathMethods.swift; sourceTree = "<group>"; };
+		3E24861620A62B23000788AB /* Itemize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Itemize.swift; sourceTree = "<group>"; };
 		3E60397420A0A88F00743C7F /* Math.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
 		3E60397620A34F5500743C7F /* MathDisplayOperator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathDisplayOperator.swift; sourceTree = "<group>"; };
 		3E60397A20A3524B00743C7F /* MathList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathList.swift; sourceTree = "<group>"; };
@@ -56,6 +59,7 @@
 		3E60398620A37F6C00743C7F /* MathLiterals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathLiterals.swift; sourceTree = "<group>"; };
 		3E60398820A381B000743C7F /* MathFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathFunctions.swift; sourceTree = "<group>"; };
 		3E68573820A4C59700516993 /* MathContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathContent.swift; sourceTree = "<group>"; };
+		3E9214B820A7243A000F0FD0 /* Subinserting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subinserting.swift; sourceTree = "<group>"; };
 		3E98FBE4209B6360005A8D53 /* SwifTeX */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SwifTeX; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E98FBE7209B6360005A8D53 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		3E98FBEE209B6372005A8D53 /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
@@ -109,6 +113,8 @@
 				3EE5ECE6209D108300914E9F /* SaveCompileOpen.swift */,
 				3EE5ECE8209D112600914E9F /* Escaping.swift */,
 				3EE5ECEA209D121700914E9F /* Inserting.swift */,
+				3E9214B820A7243A000F0FD0 /* Subinserting.swift */,
+				3E24861620A62B23000788AB /* Itemize.swift */,
 				3EE5ECEE209E83FE00914E9F /* Enclosing.swift */,
 				3EE5ECF0209E879F00914E9F /* Areas.swift */,
 				3EE5ECF2209E888E00914E9F /* Statements.swift */,
@@ -201,6 +207,7 @@
 				3E60398920A381B000743C7F /* MathFunctions.swift in Sources */,
 				3E2DF06720A4C4AC00D459A4 /* MathLiteralExpressible.swift in Sources */,
 				3E60398520A35EF700743C7F /* MathOperators.swift in Sources */,
+				3E9214B920A7243A000F0FD0 /* Subinserting.swift in Sources */,
 				3EE5ECF3209E888E00914E9F /* Statements.swift in Sources */,
 				3E98FBEF209B6372005A8D53 /* Document.swift in Sources */,
 				3E322633209CEA730020FB23 /* determinant_identity.swift in Sources */,
@@ -210,6 +217,7 @@
 				3EE5ECF1209E879F00914E9F /* Areas.swift in Sources */,
 				3EE5ECF5209F810100914E9F /* TitleAbstract.swift in Sources */,
 				3EE5ECEF209E83FE00914E9F /* Enclosing.swift in Sources */,
+				3E24861720A62B23000788AB /* Itemize.swift in Sources */,
 				3E2DF06820A4C4B000D459A4 /* MathLiterals.swift in Sources */,
 				3E24861520A53A8A000788AB /* MathMethods.swift in Sources */,
 				3E2DF06620A4C4A800D459A4 /* MathList.swift in Sources */,

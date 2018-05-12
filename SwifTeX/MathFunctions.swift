@@ -7,19 +7,31 @@
 //
 
 public extension Math {
-    public static func sum(_ low: Math, _ high: Math? = nil, of arg: Math) -> Math {
-        let sum = Math(content: .literal(.sum))
-        let lhs = (high.map { sum ^ $0 } ?? sum).sub(math: low)
+    internal static func loop(_ symbol: Math.Literal,_ low: Math, _ high: Math?, of argument: Math) -> Math {
+        let mathSymbol = Math(content: .literal(symbol))
+        let loop = (high.map { mathSymbol ^ $0 } ?? mathSymbol).sub(math: low)
         return Math(
-            display: arg.display,
+            display: argument.display,
             content: Math.Content(
                 inner: .operation(
                     .loop,
-                    lhs: lhs.content,
-                    rhs: arg.content
+                    lhs: loop.content,
+                    rhs: argument.content
                 ),
                 shell: .none)
         )
+    }
+    
+    public static func sum(_ low: Math, _ high: Math? = nil, of argument: Math) -> Math {
+        return loop(.sum, low, high, of: argument)
+    }
+    
+    public static func union(_ low: Math, _ high: Math? = nil, of argument: Math) -> Math {
+        return loop(.bigcup, low, high, of: argument)
+    }
+    
+    public static func intersection(_ low: Math, _ high: Math? = nil, of argument: Math) -> Math {
+        return loop(.bigcap, low, high, of: argument)
     }
 }
 
@@ -62,5 +74,10 @@ public extension Math {
     public static func cal(_ string: String) -> Math {
         // TODO: Prevent code injection
         return Math(content: Math.Content(inner: .literal(Math.Literal(code: "\\mathcal{\(string)}", short: true, single: true, codeEnd: (.symbol, .symbol), renderEnd: (.prettyLetter, .prettyLetter))), shell: .none))
+    }
+    
+    public static func bf(_ string: String) -> Math {
+        // TODO: Prevent code injection
+        return Math(content: Math.Content(inner: .literal(Math.Literal(code: "\\mathbf{\(string)}", short: true, single: true, codeEnd: (.symbol, .symbol), renderEnd: (.prettyLetter, .prettyLetter))), shell: .none))
     }
 }

@@ -68,3 +68,9 @@ public extension Document {
     public func lemma(_ title: String? = nil, _ statement: String) { lemma(title, closure: { $0 <- statement }) }
     
 }
+
+public extension Document {
+    public func proof(closure: (Document) -> Void) {
+        enclose("proof", closure: closure)
+    }
+}

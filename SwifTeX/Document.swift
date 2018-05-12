@@ -14,7 +14,7 @@ public class Document {
     public let `class`: Class
     public let path: String?
     
-    internal var headers: Set<String> = []
+    internal var headers: Set<String> = ["\\usepackage{amsthm}"]
     internal var statementHeaders: [StatementHeader] = []
     
     public internal(set) var innerContent = ""
