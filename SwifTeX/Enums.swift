@@ -67,3 +67,19 @@ internal extension Bracket {
     }
 }
 
+public enum EncloseParameter {
+    case none
+    case required(String)
+    case optional(String)
+}
+
+extension EncloseParameter: CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .none: return ""
+        case .required(let value): return Bracket.curly.enclose(value)
+        case .optional(let value): return Bracket.square.enclose(value)
+        }
+    }
+}
+

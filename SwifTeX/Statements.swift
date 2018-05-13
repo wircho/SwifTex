@@ -24,8 +24,8 @@ internal struct StatementHeader {
     }
 }
 
-private extension Document {
-    private func setStatementHeader(_ type: StatementType, overwrite: Bool, name: String? = nil, sibling: StatementType? = nil, parent: NumberedType? = nil) {
+internal extension Document {
+    fileprivate func setStatementHeader(_ type: StatementType, overwrite: Bool, name: String? = nil, sibling: StatementType? = nil, parent: NumberedType? = nil) {
         guard let index = statementHeaders.index(where: { $0.type == type }) else {
             statementHeaders.append(StatementHeader(type: type, name: name, sibling: sibling, parent: parent))
             return
@@ -34,7 +34,7 @@ private extension Document {
         statementHeaders[index] = StatementHeader(type: type, name: name, sibling: sibling, parent: parent)
     }
     
-    private func setDefaultStatementHeader(_ type: StatementType, overwrite: Bool) {
+    fileprivate func setDefaultStatementHeader(_ type: StatementType, overwrite: Bool) {
         switch type {
         case .theorem: setStatementHeader(type, overwrite: overwrite)
         case .corollary: setStatementHeader(type, overwrite: overwrite, parent: .statement(.theorem))
@@ -42,26 +42,26 @@ private extension Document {
         }
     }
     
-    private func statement(_ type: StatementType, title: String?, closure: (Document) -> Void) {
+    fileprivate func statement(_ type: StatementType, title: String?, closure: (Document) -> Void) {
         setDefaultStatementHeader(type, overwrite: false)
-        enclose(type.rawValue, optionalTitle: title, closure: closure)
+        enclose(type.rawValue, parameter: title.map { (.none, .optional($0)) } ?? (.none, .none), closure: closure)
     }
 }
 
-public extension Document {
+public extension DocumentProtocol {
     public func theoremHeader(name: String? = nil, sibling: StatementType? = nil, parent: NumberedType? = nil) {
-        setStatementHeader(.theorem, overwrite: true, name: name, sibling: sibling, parent: parent)
+        innerDocument.setStatementHeader(.theorem, overwrite: true, name: name, sibling: sibling, parent: parent)
     }
     public func corollaryHeader(name: String? = nil, sibling: StatementType? = nil, parent: NumberedType? = nil) {
-        setStatementHeader(.corollary, overwrite: true, name: name, sibling: sibling, parent: parent)
+        innerDocument.setStatementHeader(.corollary, overwrite: true, name: name, sibling: sibling, parent: parent)
     }
     public func lemmaHeader(name: String? = nil, sibling: StatementType? = nil, parent: NumberedType? = nil) {
-        setStatementHeader(.lemma, overwrite: true, name: name, sibling: sibling, parent: parent)
+        innerDocument.setStatementHeader(.lemma, overwrite: true, name: name, sibling: sibling, parent: parent)
     }
     
-    public func theorem(_ title: String? = nil, closure: (Document) -> Void) { statement(.theorem, title: title, closure: closure) }
-    public func corollary(_ title: String? = nil, closure: (Document) -> Void) { statement(.corollary, title: title, closure: closure) }
-    public func lemma(_ title: String? = nil, closure: (Document) -> Void) { statement(.lemma, title: title, closure: closure) }
+    public func theorem(_ title: String? = nil, closure: (Document) -> Void) { innerDocument.statement(.theorem, title: title, closure: closure) }
+    public func corollary(_ title: String? = nil, closure: (Document) -> Void) { innerDocument.statement(.corollary, title: title, closure: closure) }
+    public func lemma(_ title: String? = nil, closure: (Document) -> Void) { innerDocument.statement(.lemma, title: title, closure: closure) }
     
     public func theorem(_ title: String? = nil, _ statement: String) { theorem(title, closure: { $0 <- statement }) }
     public func corollary(_ title: String? = nil, _ statement: String) { corollary(title, closure: { $0 <- statement }) }
@@ -69,8 +69,8 @@ public extension Document {
     
 }
 
-public extension Document {
+public extension DocumentProtocol {
     public func proof(closure: (Document) -> Void) {
-        enclose("proof", closure: closure)
+        innerDocument.enclose("proof", closure: closure)
     }
 }

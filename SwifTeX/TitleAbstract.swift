@@ -25,13 +25,15 @@ public struct Title: Subinsertable {
 }
 
 public struct Abstract: EncloseSubinsertable {
+    public typealias Parent = Document
     public let content: (AbstractDocument) -> Void
     public static let name = "abstract"
+    public var parameter: (left: EncloseParameter, right: EncloseParameter) { return (.none, .none) }
 }
 
 public struct AbstractDocument: EnclosedDocument {
     public let innerDocument: Document
-    public let prefix: String? = "\\item"
+    public let prefix: String? = nil
     public init(innerDocument: Document) { self.innerDocument = innerDocument }
 }
 

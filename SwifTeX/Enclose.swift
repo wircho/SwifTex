@@ -7,17 +7,9 @@
 //
 
 internal extension Document {
-    internal func enclose(_ type: String, before: String = "", after: String = "", closure: (Document) -> Void) {
-        self <!- "\\begin\(before)\(Bracket.curly.escape(type))\(after)\n"
+    internal func enclose(_ name: String, parameter: (left: EncloseParameter, right: EncloseParameter) = (.none, .none), closure: (Document) -> Void) {
+        self <!- "\\begin\(parameter.left)\(Bracket.curly.escape(name))\(parameter.right)\n"
         closure(self)
-        self <!- "\n\\end\(Bracket.curly.escape(type))"
-    }
-    
-    internal func enclose(_ type: String, requiredTitle: String, closure: (Document) -> Void) {
-        enclose(type, after: Bracket.curly.escape(requiredTitle), closure: closure)
-    }
-    
-    internal func enclose(_ type: String, optionalTitle: String?, closure: (Document) -> Void) {
-        enclose(type, after: Bracket.square.escape(optionalTitle), closure: closure)
+        self <!- "\n\\end\(Bracket.curly.escape(name))"
     }
 }
