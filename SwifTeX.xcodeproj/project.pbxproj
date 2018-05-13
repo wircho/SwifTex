@@ -30,7 +30,7 @@
 		3EE5ECE9209D112600914E9F /* Escape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE5ECE8209D112600914E9F /* Escape.swift */; };
 		3EE5ECEB209D121700914E9F /* Insertable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE5ECEA209D121700914E9F /* Insertable.swift */; };
 		3EE5ECEF209E83FE00914E9F /* Enclose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE5ECEE209E83FE00914E9F /* Enclose.swift */; };
-		3EE5ECF1209E879F00914E9F /* Areas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE5ECF0209E879F00914E9F /* Areas.swift */; };
+		3EE5ECF1209E879F00914E9F /* Parts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE5ECF0209E879F00914E9F /* Parts.swift */; };
 		3EE5ECF3209E888E00914E9F /* Statements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE5ECF2209E888E00914E9F /* Statements.swift */; };
 		3EE5ECF5209F810100914E9F /* TitleAbstract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE5ECF4209F810100914E9F /* TitleAbstract.swift */; };
 /* End PBXBuildFile section */
@@ -72,7 +72,7 @@
 		3EE5ECE8209D112600914E9F /* Escape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Escape.swift; sourceTree = "<group>"; };
 		3EE5ECEA209D121700914E9F /* Insertable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Insertable.swift; sourceTree = "<group>"; };
 		3EE5ECEE209E83FE00914E9F /* Enclose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enclose.swift; sourceTree = "<group>"; };
-		3EE5ECF0209E879F00914E9F /* Areas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Areas.swift; sourceTree = "<group>"; };
+		3EE5ECF0209E879F00914E9F /* Parts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parts.swift; sourceTree = "<group>"; };
 		3EE5ECF2209E888E00914E9F /* Statements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Statements.swift; sourceTree = "<group>"; };
 		3EE5ECF4209F810100914E9F /* TitleAbstract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleAbstract.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -119,7 +119,7 @@
 				3E24861620A62B23000788AB /* Itemize.swift */,
 				3E9214BA20A76563000F0FD0 /* Enumerate.swift */,
 				3EE5ECF4209F810100914E9F /* TitleAbstract.swift */,
-				3EE5ECF0209E879F00914E9F /* Areas.swift */,
+				3EE5ECF0209E879F00914E9F /* Parts.swift */,
 				3EE5ECF2209E888E00914E9F /* Statements.swift */,
 				3E60397420A0A88F00743C7F /* Math.swift */,
 				3E68573820A4C59700516993 /* MathContent.swift */,
@@ -217,7 +217,7 @@
 				3E322633209CEA730020FB23 /* determinant_identity.swift in Sources */,
 				3E68573920A4C59700516993 /* MathContent.swift in Sources */,
 				3EE5ECEB209D121700914E9F /* Insertable.swift in Sources */,
-				3EE5ECF1209E879F00914E9F /* Areas.swift in Sources */,
+				3EE5ECF1209E879F00914E9F /* Parts.swift in Sources */,
 				3E9214BB20A76563000F0FD0 /* Enumerate.swift in Sources */,
 				3EE5ECF5209F810100914E9F /* TitleAbstract.swift in Sources */,
 				3EE5ECEF209E83FE00914E9F /* Enclose.swift in Sources */,

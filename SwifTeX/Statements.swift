@@ -7,55 +7,55 @@
 //
 
 internal struct StatementHeader {
-    let type: StatementType
+    let statement: Statement
     let name: String
-    let sibling: StatementType?
-    let parent: NumberedType?
+    let sibling: Statement?
+    let parent: Numbered?
     
-    init (type: StatementType, name: String?, sibling: StatementType?, parent: NumberedType?) {
-        self.type = type
-        self.name = name ?? type.rawValue.capitalized
+    init (statement: Statement, name: String?, sibling: Statement?, parent: Numbered?) {
+        self.statement = statement
+        self.name = name ?? statement.rawValue.capitalized
         self.sibling = sibling
         self.parent = parent
     }
     
     var definition: String {
-        return "\\newtheorem\(Bracket.curly.escape(type.rawValue))\(Bracket.square.escape(sibling?.rawValue))\(Bracket.curly.escape(name))\(Bracket.square.escape(parent?.rawValue))"
+        return "\\newtheorem\(Bracket.curly.escape(statement.rawValue))\(Bracket.square.escape(sibling?.rawValue))\(Bracket.curly.escape(name))\(Bracket.square.escape(parent?.rawValue))"
     }
 }
 
 internal extension Document {
-    fileprivate func setStatementHeader(_ type: StatementType, overwrite: Bool, name: String? = nil, sibling: StatementType? = nil, parent: NumberedType? = nil) {
-        guard let index = statementHeaders.index(where: { $0.type == type }) else {
-            statementHeaders.append(StatementHeader(type: type, name: name, sibling: sibling, parent: parent))
+    fileprivate func setStatementHeader(_ statement: Statement, overwrite: Bool, name: String? = nil, sibling: Statement? = nil, parent: Numbered? = nil) {
+        guard let index = statementHeaders.index(where: { $0.statement == statement }) else {
+            statementHeaders.append(StatementHeader(statement: statement, name: name, sibling: sibling, parent: parent))
             return
         }
         guard overwrite else { return }
-        statementHeaders[index] = StatementHeader(type: type, name: name, sibling: sibling, parent: parent)
+        statementHeaders[index] = StatementHeader(statement: statement, name: name, sibling: sibling, parent: parent)
     }
     
-    fileprivate func setDefaultStatementHeader(_ type: StatementType, overwrite: Bool) {
-        switch type {
-        case .theorem: setStatementHeader(type, overwrite: overwrite)
-        case .corollary: setStatementHeader(type, overwrite: overwrite, parent: .statement(.theorem))
-        case .lemma: setStatementHeader(type, overwrite: overwrite)
+    fileprivate func setDefaultStatementHeader(_ statement: Statement, overwrite: Bool) {
+        switch statement {
+        case .theorem: setStatementHeader(statement, overwrite: overwrite)
+        case .corollary: setStatementHeader(statement, overwrite: overwrite, parent: .statement(.theorem))
+        case .lemma: setStatementHeader(statement, overwrite: overwrite)
         }
     }
     
-    fileprivate func statement(_ type: StatementType, title: String?, closure: (Document) -> Void) {
-        setDefaultStatementHeader(type, overwrite: false)
-        enclose(type.rawValue, parameter: title.map { (.none, .optional($0)) } ?? (.none, .none), closure: closure)
+    fileprivate func statement(_ statement: Statement, title: String?, closure: (Document) -> Void) {
+        setDefaultStatementHeader(statement, overwrite: false)
+        enclose(statement.rawValue, parameter: title.map { (.none, .optional($0)) } ?? (.none, .none), closure: closure)
     }
 }
 
 public extension DocumentProtocol {
-    public func theoremHeader(name: String? = nil, sibling: StatementType? = nil, parent: NumberedType? = nil) {
+    public func theoremHeader(name: String? = nil, sibling: Statement? = nil, parent: Numbered? = nil) {
         innerDocument.setStatementHeader(.theorem, overwrite: true, name: name, sibling: sibling, parent: parent)
     }
-    public func corollaryHeader(name: String? = nil, sibling: StatementType? = nil, parent: NumberedType? = nil) {
+    public func corollaryHeader(name: String? = nil, sibling: Statement? = nil, parent: Numbered? = nil) {
         innerDocument.setStatementHeader(.corollary, overwrite: true, name: name, sibling: sibling, parent: parent)
     }
-    public func lemmaHeader(name: String? = nil, sibling: StatementType? = nil, parent: NumberedType? = nil) {
+    public func lemmaHeader(name: String? = nil, sibling: Statement? = nil, parent: Numbered? = nil) {
         innerDocument.setStatementHeader(.lemma, overwrite: true, name: name, sibling: sibling, parent: parent)
     }
     

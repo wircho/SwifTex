@@ -25,10 +25,10 @@ internal extension Bracket {
 }
 
 extension Math {
-    internal static func bracket(_ type: Bracket, display: Bool? = nil, displayStyle: Bool = false, tall forceTall: Bool = false, _ maths: [Math]) -> Math {
+    internal static func bracket(_ bracket: Bracket, display: Bool? = nil, displayStyle: Bool = false, tall forceTall: Bool = false, _ maths: [Math]) -> Math {
         let listMath = Math(list: maths)
         let tall = forceTall || !listMath.short
-        return Math(display: display ?? listMath.display, displayStyle: displayStyle, content: .bracket(type, tall: tall, inner: listMath.content))
+        return Math(display: display ?? listMath.display, displayStyle: displayStyle, content: .bracket(bracket, tall: tall, inner: listMath.content))
     }
     
     public static func round(display: Bool? = nil, displayStyle: Bool = false, _ math: Math ...) -> Math {

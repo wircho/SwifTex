@@ -14,38 +14,38 @@ public enum DocumentError: Error {
     case FilePathNotSpecified
 }
 
-public enum AreaType: String {
+public enum Part: String {
     case chapter
     case section
     case subsection
 }
 
-public enum StatementType: String {
+public enum Statement: String {
     case theorem
     case corollary
     case lemma
 }
 
-public enum NumberedType {
-    case statement(StatementType)
-    case area(AreaType)
+public enum Numbered {
+    case statement(Statement)
+    case part(Part)
 }
 
-extension NumberedType: RawRepresentable {
+extension Numbered: RawRepresentable {
     public var rawValue: String {
         switch self {
         case .statement(let statement): return statement.rawValue
-        case .area(let area): return area.rawValue
+        case .part(let part): return part.rawValue
         }
     }
     
     public init?(rawValue: String) {
-        guard let area = AreaType(rawValue: rawValue) else {
-            guard let numbered = StatementType(rawValue: rawValue).map({ NumberedType.statement($0) }) else { return nil }
+        guard let part = Part(rawValue: rawValue) else {
+            guard let numbered = Statement(rawValue: rawValue).map({ Numbered.statement($0) }) else { return nil }
             self = numbered
             return
         }
-        self = .area(area)
+        self = .part(part)
     }
 }
 
