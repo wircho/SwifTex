@@ -1,5 +1,5 @@
 //
-//  Inserting.swift
+//  Insertable.swift
 //  SwifTeX
 //
 //  Created by Adolfo Rodriguez on 2018-05-04.
@@ -33,6 +33,10 @@ public func <!-(document: Document, string: String) {
 }
 
 public func <-<T: Insertable>(document: DocumentProtocol, insertable: T) {
+    insert(into: document, insertable: insertable)
+}
+
+internal func insert<T: InsertableBase>(into document: DocumentProtocol, insertable: T) {
     if let prefix = document.prefix { document.innerDocument.innerContent += prefix }
     insertable.insert(into: document.innerDocument)
 }

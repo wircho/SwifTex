@@ -7,61 +7,61 @@
 //
 
 internal struct StatementHeader {
-    let type: StatementType
+    let statement: Statement
     let name: String
-    let sibling: StatementType?
-    let parent: NumberedType?
+    let sibling: Statement?
+    let parent: Numbered?
     
-    init (type: StatementType, name: String?, sibling: StatementType?, parent: NumberedType?) {
-        self.type = type
-        self.name = name ?? type.rawValue.capitalized
+    init (statement: Statement, name: String?, sibling: Statement?, parent: Numbered?) {
+        self.statement = statement
+        self.name = name ?? statement.rawValue.capitalized
         self.sibling = sibling
         self.parent = parent
     }
     
     var definition: String {
-        return "\\newtheorem\(Bracket.curly.escape(type.rawValue))\(Bracket.square.escape(sibling?.rawValue))\(Bracket.curly.escape(name))\(Bracket.square.escape(parent?.rawValue))"
+        return "\\newtheorem\(Bracket.curly.escape(statement.rawValue))\(Bracket.square.escape(sibling?.rawValue))\(Bracket.curly.escape(name))\(Bracket.square.escape(parent?.rawValue))"
     }
 }
 
-private extension Document {
-    private func setStatementHeader(_ type: StatementType, overwrite: Bool, name: String? = nil, sibling: StatementType? = nil, parent: NumberedType? = nil) {
-        guard let index = statementHeaders.index(where: { $0.type == type }) else {
-            statementHeaders.append(StatementHeader(type: type, name: name, sibling: sibling, parent: parent))
+internal extension Document {
+    fileprivate func setStatementHeader(_ statement: Statement, overwrite: Bool, name: String? = nil, sibling: Statement? = nil, parent: Numbered? = nil) {
+        guard let index = statementHeaders.index(where: { $0.statement == statement }) else {
+            statementHeaders.append(StatementHeader(statement: statement, name: name, sibling: sibling, parent: parent))
             return
         }
         guard overwrite else { return }
-        statementHeaders[index] = StatementHeader(type: type, name: name, sibling: sibling, parent: parent)
+        statementHeaders[index] = StatementHeader(statement: statement, name: name, sibling: sibling, parent: parent)
     }
     
-    private func setDefaultStatementHeader(_ type: StatementType, overwrite: Bool) {
-        switch type {
-        case .theorem: setStatementHeader(type, overwrite: overwrite)
-        case .corollary: setStatementHeader(type, overwrite: overwrite, parent: .statement(.theorem))
-        case .lemma: setStatementHeader(type, overwrite: overwrite)
+    fileprivate func setDefaultStatementHeader(_ statement: Statement, overwrite: Bool) {
+        switch statement {
+        case .theorem: setStatementHeader(statement, overwrite: overwrite)
+        case .corollary: setStatementHeader(statement, overwrite: overwrite, parent: .statement(.theorem))
+        case .lemma: setStatementHeader(statement, overwrite: overwrite)
         }
     }
     
-    private func statement(_ type: StatementType, title: String?, closure: (Document) -> Void) {
-        setDefaultStatementHeader(type, overwrite: false)
-        enclose(type.rawValue, optionalTitle: title, closure: closure)
+    fileprivate func statement(_ statement: Statement, title: String?, closure: (Document) -> Void) {
+        setDefaultStatementHeader(statement, overwrite: false)
+        enclose(statement.rawValue, parameter: title.map { (.none, .optional($0)) } ?? (.none, .none), closure: closure)
     }
 }
 
-public extension Document {
-    public func theoremHeader(name: String? = nil, sibling: StatementType? = nil, parent: NumberedType? = nil) {
-        setStatementHeader(.theorem, overwrite: true, name: name, sibling: sibling, parent: parent)
+public extension DocumentProtocol {
+    public func theoremHeader(name: String? = nil, sibling: Statement? = nil, parent: Numbered? = nil) {
+        innerDocument.setStatementHeader(.theorem, overwrite: true, name: name, sibling: sibling, parent: parent)
     }
-    public func corollaryHeader(name: String? = nil, sibling: StatementType? = nil, parent: NumberedType? = nil) {
-        setStatementHeader(.corollary, overwrite: true, name: name, sibling: sibling, parent: parent)
+    public func corollaryHeader(name: String? = nil, sibling: Statement? = nil, parent: Numbered? = nil) {
+        innerDocument.setStatementHeader(.corollary, overwrite: true, name: name, sibling: sibling, parent: parent)
     }
-    public func lemmaHeader(name: String? = nil, sibling: StatementType? = nil, parent: NumberedType? = nil) {
-        setStatementHeader(.lemma, overwrite: true, name: name, sibling: sibling, parent: parent)
+    public func lemmaHeader(name: String? = nil, sibling: Statement? = nil, parent: Numbered? = nil) {
+        innerDocument.setStatementHeader(.lemma, overwrite: true, name: name, sibling: sibling, parent: parent)
     }
     
-    public func theorem(_ title: String? = nil, closure: (Document) -> Void) { statement(.theorem, title: title, closure: closure) }
-    public func corollary(_ title: String? = nil, closure: (Document) -> Void) { statement(.corollary, title: title, closure: closure) }
-    public func lemma(_ title: String? = nil, closure: (Document) -> Void) { statement(.lemma, title: title, closure: closure) }
+    public func theorem(_ title: String? = nil, closure: (Document) -> Void) { innerDocument.statement(.theorem, title: title, closure: closure) }
+    public func corollary(_ title: String? = nil, closure: (Document) -> Void) { innerDocument.statement(.corollary, title: title, closure: closure) }
+    public func lemma(_ title: String? = nil, closure: (Document) -> Void) { innerDocument.statement(.lemma, title: title, closure: closure) }
     
     public func theorem(_ title: String? = nil, _ statement: String) { theorem(title, closure: { $0 <- statement }) }
     public func corollary(_ title: String? = nil, _ statement: String) { corollary(title, closure: { $0 <- statement }) }
@@ -69,8 +69,8 @@ public extension Document {
     
 }
 
-public extension Document {
+public extension DocumentProtocol {
     public func proof(closure: (Document) -> Void) {
-        enclose("proof", closure: closure)
+        innerDocument.enclose("proof", closure: closure)
     }
 }

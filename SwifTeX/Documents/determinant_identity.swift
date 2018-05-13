@@ -23,14 +23,14 @@ private let sigma = Math.sigma
 struct DeterminantIdentityPaper {
     static func main() -> Document {
         let doc = Document(.article, at: #file + ".tex")
-        doc.title("A Determinant Identity To Rule Them All", author: "Adolfo Rodríguez")
-        doc.abstract(
+        doc <- Title("A Determinant Identity To Rule Them All", author: "Adolfo Rodríguez")
+        doc <- Abstract(
             """
             This is the abstract. Abstract text!
             """
         )
-        doc.section("The Lindström–Gessel–Viennot Lemma") {
-            $0.subsection("General Statement and Proof") {
+        doc <- Section("The Lindström–Gessel–Viennot Lemma") {
+            $0 <- Subsection("General Statement and Proof") {
                 $0.theorem(
                     "The Lindström–Gessel–Viennot lemma",
                     """
@@ -47,25 +47,19 @@ struct DeterminantIdentityPaper {
                     \(§[ .sum(pp.isIn(PP), of: .sign(pp))
                     *=* .sum(pp.isIn(QQ), of: .sign(pp)) + .sum(pp.isIn(PP - QQ), of: .sign(pp))
                     *=* .sum(sigma, of: .sign(sigma) * QQ.sub(sigma).abs) + .sum(pp.isIn(PP - QQ), of: .sign(pp)) ].period)
-                    It is thus sufficient to prove that the last sum equals zero. One way to do this is to show the existence of a sign-reversing involution on \(PP - QQ). That is, a function \(f.function(from: PP - QQ, to: PP - QQ)) satisfying:
-                    
+                    It is thus sufficient to prove that the last sum equals zero. One way to do this is by showing the existence of a sign-reversing involution on \(PP - QQ). That is, a function \(f.function(from: PP - QQ, to: PP - QQ)) satisfying:
                     """
-                    
-                    
-                    
-                    $0 <- Itemize {
-                        $0 <- Item("Name") {
-                            $0 <- "Some item"
-                        }
+                    $0 <- Enumerate {
                         $0 <- "\(Math.sign.of(f.of(pp)) == -.sign(pp)) for all \(pp.isIn(PP - QQ))"
                         $0 <- "\(f.of(f.of(pp)) == pp) for all \(pp.isIn(PP - QQ))"
                     }
+                    $0 <- """
+                    This would ensure that the elements of \(PP - QQ) come in pairs of opposite signs. One such function \(f) is defined as 
+                    """
                 }
             }
             
-            
-            
-            $0.subsection("Second Section") {
+            $0 <- Subsection("Second Section") {
                 $0 <- """
                 Text of the Second Section
                 """

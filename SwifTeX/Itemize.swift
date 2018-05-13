@@ -6,36 +6,21 @@
 //  Copyright © 2018 Wircho. All rights reserved.
 //
 
-public struct Itemize {
-    internal let content: (ItemizeDocument) -> Void
+public struct Itemize: EncloseInsertable {
+    public let content: (ItemizeDocument) -> Void
+    public static let name = "itemize"
+    public var parameter: (left: EncloseParameter, right: EncloseParameter) { return (.none, .none) }
 }
 
-public struct ItemizeDocument: DocumentProtocol {
+public struct ItemizeDocument: EnclosedDocument {
     public let innerDocument: Document
     public let prefix: String? = "\\item"
-}
-
-extension Itemize: Insertable {
-    public func insert(into document: Document) {
-        document.enclose("itemize") {
-            content(ItemizeDocument(innerDocument: $0))
-        }
-    }
-    public var escaped: Itemize { return self }
+    public init(innerDocument: Document) { self.innerDocument = innerDocument }
 }
 
 public struct Item {
     public let name: String?
     public let content: (ItemDocument) -> Void
-    public init(_ name: String? = nil, content: @escaping (ItemDocument) -> Void) {
-        self.name = name
-        self.content = content
-    }
-}
-
-public struct ItemDocument: DocumentProtocol {
-    public let innerDocument: Document
-    public let prefix: String? = nil
 }
 
 extension Item: Subinsertable {
@@ -44,6 +29,10 @@ extension Item: Subinsertable {
         if let name = name { document <!- "[\(name)]" }
         content(ItemDocument(innerDocument: document))
     }
-    public var escaped: Item { return self }
+}
+
+public struct ItemDocument: DocumentProtocol {
+    public let innerDocument: Document
+    public let prefix: String? = nil
 }
 
