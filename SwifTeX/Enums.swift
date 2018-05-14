@@ -83,3 +83,41 @@ extension EncloseParameter: CustomStringConvertible {
     }
 }
 
+public protocol UnitProtocol { static var code: String { get } }
+
+public enum Milimeters: UnitProtocol { public static let code = "mm" }
+public enum Inches: UnitProtocol { public static let code = "in" }
+public enum Centimeters: UnitProtocol { public static let code = "cm" }
+public enum Points: UnitProtocol { public static let code = "pt" }
+
+public protocol LengthProtocol: CustomStringConvertible { var value: Float { get } }
+
+public struct Length<Unit: UnitProtocol> {
+    public let value: Float
+    public init(_ value: Float) { self.value = value }
+}
+
+extension Length: LengthProtocol {
+    public var description: String {
+        return "\(value)\(Unit.code)"
+    }
+}
+
+public protocol Amount: LengthProtocol {}
+
+extension Int: Amount {
+    public var value: Float { return Float(self) }
+}
+
+extension Double: Amount {
+    public var value: Float { return Float(self) }
+}
+
+public extension Amount {
+    public var milimeters: Length<Milimeters> { return .init(value) }
+    public var inches: Length<Inches> { return .init(value) }
+    public var centimeters: Length<Centimeters> { return .init(value) }
+    public var points: Length<Points> { return .init(value) }
+}
+
+

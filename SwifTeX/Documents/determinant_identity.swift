@@ -70,7 +70,17 @@ struct DeterminantIdentityPaper {
                 $0 <- """
                 Text of the Second Section
                 """
+                
+                $0 <- Tikz {
+                    $0 <- .init(fill: .green) | (2, 2) -- (2, 3) -- (3, 3) -- (3, 2) -- .arc((3, 2), 0, 90, 7.milimeters) -- (2, 2)
+                    $0 <- .init(2.points, .dashed, line: .blue, fill: .red) | (0, 0) -- (5.points, 30.points) -- (5,0)
+                    $0 <- 3.points | .circle((0,0), 1)
+                    $0 <- .init(2.points, .dashed, fill: .yellow) | .circle((0,0), 0.5)
+                    $0 <- .circle((0,0), 0.25)
+                    $0 <- .ellipse((0,0), 0.25, 0.1)
+                }
             }
+            
         }
         return doc
     }
