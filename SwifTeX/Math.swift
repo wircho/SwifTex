@@ -29,6 +29,7 @@ public struct Math {
     
     internal indirect enum InnerContent {
         case prefix(Literal, inner: Math.Content)
+        case postfix(Literal, inner: Math.Content)
         case operation(Operation, lhs: Math.Content, rhs: Math.Content)
         case bracket(Bracket, tall: Bool, inner: Math.Content)
         case literal(Literal)

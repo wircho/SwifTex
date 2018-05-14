@@ -38,6 +38,7 @@ extension Math.InnerContent: MathCodable {
             case .loop, .multiplication, .of, .other, .over, .sub, .subtraction, .sum, .toThe: return (lhs.codeEnd.left, rhs.codeEnd.right)
             }
         case let .prefix(prefix, inner): return (prefix.codeEnd.left, inner.codeEnd.right)
+        case let .postfix(postfix, inner): return (inner.codeEnd.left, postfix.codeEnd.right)
         }
     }
     
@@ -52,12 +53,14 @@ extension Math.InnerContent: MathCodable {
             case .sub, .toThe: return (lhs.renderEnd.left, lhs.renderEnd.right)
             }
         case let .prefix(prefix, inner): return (prefix.renderEnd.left, inner.renderEnd.right)
+        case let .postfix(postfix, inner): return (inner.renderEnd.left, postfix.renderEnd.right)
         }
     }
     
     internal var code: String {
         switch self {
         case let .prefix(prefix, math): return join(prefix, math)
+        case let .postfix(postfix, math): return join(math, postfix)
         case let .bracket(bracket, tall, math): return tall ? bracket.mathTallEnclose(math.code) : bracket.mathEnclose(math.code)
         case let .literal(literal): return literal.code
         case let .operation(op, lhs, rhs): return op.code(lhs: lhs, rhs: rhs)
@@ -97,7 +100,7 @@ internal extension Math.Operation {
                 case .round: return join(lhs, rhs)
                 case .flat, .square, .curly: return join(lhs/*, Math.Literal.space*/, rhs)
                 }
-            case .literal, .operation, .prefix: return join(lhs/*, Math.Literal.space*/, rhs)
+            case .literal, .operation, .prefix, .postfix: return join(lhs/*, Math.Literal.space*/, rhs)
             }
         case .fraction: return join(Math.Literal.frac, lhs, rhs)
         case let .multiplication(separator):

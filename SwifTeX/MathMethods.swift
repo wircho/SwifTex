@@ -83,4 +83,10 @@ public extension Math {
     }
 }
 
+public extension Math {
+    public var prime: Math {
+        return Math(display: display, content: .postfix(.prime, inner: self.content))
+    }
+}
+
 

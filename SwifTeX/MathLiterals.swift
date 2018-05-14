@@ -36,6 +36,7 @@ internal extension Math.Literal {
     internal static let space = Math.Literal.symbol("\\,")
     internal static let colon = Math.Literal.symbol(":")
     
+    internal static let circ = Math.Literal.backslash("circ", renderEnd: (.symbol, .symbol))
     internal static let neq = Math.Literal.backslash("neq", renderEnd: (.symbol, .symbol))
     internal static let leq = Math.Literal.backslash("leq", renderEnd: (.symbol, .symbol))
     internal static let geq = Math.Literal.backslash("geq", renderEnd: (.symbol, .symbol))
@@ -67,6 +68,8 @@ internal extension Math.Literal {
     
     internal static let toThe = Math.Literal.symbol("^")
     internal static let sub = Math.Literal.symbol("_")
+    
+    internal static let prime = Math.Literal(code: "'", short: false, single: true, codeEnd: (.symbol, .symbol), renderEnd: (.symbol, .symbol))
 }
 
 public extension Math {

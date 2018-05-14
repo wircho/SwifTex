@@ -30,6 +30,7 @@ infix operator *<=*: AssociativeAssignmentPrecedence
 infix operator *>=*: AssociativeAssignmentPrecedence
 infix operator ≤: AssociativeAssignmentPrecedence
 infix operator ≥: AssociativeAssignmentPrecedence
+infix operator ©: AssociativeAssignmentPrecedence
 
 internal extension Math.Content {
     private var rounded: Math.Content {
@@ -38,7 +39,7 @@ internal extension Math.Content {
     
     internal var forAddition: Math.Content {
         switch inner {
-        case .prefix, .bracket, .literal: return self
+        case .prefix, .postfix, .bracket, .literal: return self
         case let .operation(op, _, _):
             switch op {
             case .fraction, .loop, .multiplication, .of, .over, .sub, .subtraction, .sum, .toThe: return self
@@ -49,7 +50,7 @@ internal extension Math.Content {
     
     internal var forRightSubtraction: Math.Content {
         switch inner {
-        case .bracket, .literal, .prefix: return self
+        case .bracket, .literal, .prefix, .postfix: return self
         case let .operation(op, _, _):
             switch op {
             case .fraction, .loop, .multiplication, .of, .over, .sub, .toThe: return self
@@ -60,7 +61,7 @@ internal extension Math.Content {
     
     internal var forLeftMultiplication: Math.Content {
         switch inner {
-        case .prefix, .bracket, .literal: return self
+        case .prefix, .postfix, .bracket, .literal: return self
         case let .operation(op, _, _):
             switch op {
             case .fraction, .loop, .multiplication, .of, .sub, .toThe: return self
@@ -71,7 +72,7 @@ internal extension Math.Content {
     
     internal var forRightMultiplication: Math.Content {
         switch inner {
-        case .prefix, .bracket, .literal: return self
+        case .prefix, .postfix, .bracket, .literal: return self
         case let .operation(op, _, _):
             switch op {
             case .fraction, .loop, .multiplication, .of, .sub, .toThe, .over: return self
@@ -99,7 +100,7 @@ internal extension Math.Content {
     internal var asExponentBase: Math.Content {
         switch inner {
         case .bracket, .literal: return self
-        case .prefix: return rounded
+        case .prefix, .postfix: return rounded
         case let .operation(op, lhs, _):
             switch op {
             case .of: return self
@@ -111,7 +112,7 @@ internal extension Math.Content {
                     case .fraction, .loop, .multiplication, .of, .other, .over, .subtraction, .sum, .sub: return self
                     case .toThe: return rounded
                     }
-                case .bracket, .literal, .prefix: return self
+                case .bracket, .literal, .prefix, .postfix: return self
                 }
             }
         }
@@ -119,7 +120,7 @@ internal extension Math.Content {
     
     internal var asSubscriptBase: Math.Content {
         switch inner {
-        case .bracket, .literal, .prefix: return self
+        case .bracket, .literal, .prefix, .postfix: return self
         case let .operation(op, lhs, _):
             switch op {
             case .of: return self
@@ -131,7 +132,7 @@ internal extension Math.Content {
                     case .fraction, .loop, .multiplication, .of, .other, .over, .subtraction, .sum, .toThe: return self
                     case .sub: return rounded
                     }
-                case .bracket, .literal, .prefix: return self
+                case .bracket, .literal, .prefix, .postfix: return self
                 }
             }
         }
@@ -139,7 +140,7 @@ internal extension Math.Content {
     
     internal var asFunction: Math.Content {
         switch inner {
-        case .literal, .prefix, .bracket: return self
+        case .literal, .prefix, .postfix, .bracket: return self
         case let .operation(op, _, _):
             switch op {
             case .fraction, .sub, .toThe, .of: return self
@@ -150,7 +151,7 @@ internal extension Math.Content {
     
     internal var asRoundedFunctionArgument: Math.Content {
         switch inner {
-        case .literal, .operation, .prefix: return rounded
+        case .literal, .operation, .prefix, .postfix: return rounded
         case let .bracket(bracket, _, _):
             switch bracket {
             case .curly, .square, .flat: return rounded
@@ -161,7 +162,7 @@ internal extension Math.Content {
     
     internal func asFunctionArgument(of f: Math.Content) -> Math.Content {
         switch f.inner {
-        case .bracket, .operation, .prefix: return asRoundedFunctionArgument
+        case .bracket, .operation, .prefix, .postfix: return asRoundedFunctionArgument
         case let .literal(literal):
             switch literal.renderEnd {
             case (.applyingLetter, .applyingLetter): return asSingleOrRounded
@@ -254,6 +255,10 @@ internal extension Math.Content {
     internal static func >=(lhs: Math.Content, rhs: Math.Content) -> Math.Content {
         return operation(.other(.geq), lhs: lhs, rhs: rhs)
     }
+    
+    internal static func ©(lhs: Math.Content, rhs: Math.Content) -> Math.Content {
+        return operation(.other(.circ), lhs: lhs, rhs: rhs)
+    }
 }
 
 extension Math {
@@ -339,6 +344,10 @@ extension Math {
     
     public static func ≥(lhs: Math, rhs: Math) -> Math {
         return Math(display: lhs.display, content: lhs.content >= rhs.content)
+    }
+    
+    public static func ©(lhs: Math, rhs: Math) -> Math {
+        return Math(display: lhs.display, content: lhs.content © rhs.content)
     }
 }
 

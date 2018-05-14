@@ -10,6 +10,7 @@ internal extension Math.Content {
     internal var short: Bool {
         switch inner {
         case let .prefix(prefix, inner): return prefix.short && inner.short
+        case let .postfix(postfix, inner): return postfix.short && inner.short
         case .bracket: return false
         case let .literal(literal): return literal.short
         case let .operation(op, lhs, rhs):
@@ -27,7 +28,7 @@ internal extension Math.Content {
         case .grouped, .displayStyle: return true
         case .none:
             switch inner {
-            case .bracket, .prefix: return false
+            case .bracket, .prefix, .postfix: return false
             case let .literal(literal): return literal.single
             case let .operation(op, _, _):
                 switch op {
@@ -46,6 +47,10 @@ internal extension Math {
 internal extension Math.Content {
     internal static func prefix(_ prefix: Math.Literal, inner: Math.Content) -> Math.Content {
         return Math.Content(inner: .prefix(prefix, inner: inner), shell: .none)
+    }
+    
+    internal static func postfix(_ postfix: Math.Literal, inner: Math.Content) -> Math.Content {
+        return Math.Content(inner: .postfix(postfix, inner: inner), shell: .none)
     }
     
     internal static func literal(_ literal: Math.Literal) -> Math.Content {
