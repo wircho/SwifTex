@@ -7,16 +7,11 @@
 //
 
 public struct Enumerate: EncloseInsertable {
-    public let content: (EnumerateDocument) -> Void
+    public let content: (EnclosedDocument<Enumerate>) -> Void
     public static let name = "enumerate"
-    public var parameter: (left: EncloseParameter, right: EncloseParameter) { return (.none, .none) }
+    public let documentPrefix = "\\item"
+    public let parameter: (left: EncloseParameter, right: EncloseParameter) = (.none, .none)
     public let prepare: ((Document) -> Void)? = nil
-}
-
-public struct EnumerateDocument: EnclosedDocument {
-    public let innerDocument: Document
-    public let prefix: String? = "\\item"
-    public init(innerDocument: Document) { self.innerDocument = innerDocument }
 }
 
 public struct Number {
