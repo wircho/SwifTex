@@ -6,6 +6,26 @@
 //  Copyright © 2018 Wircho. All rights reserved.
 //
 
+public protocol StatementInfoProtocol {
+    static var statement: Statement { get }
+}
+
+public struct StatementStruct<StatementInfo: StatementInfoProtocol>: EncloseInsertable {
+    public var content: (StatementDocument<StatementInfo>) -> Void
+    public static var name: String { return StatementInfo.statement.rawValue }
+    public let parameter: (left: EncloseParameter, right: EncloseParameter)
+    public init(_ title: String, content: @escaping (StatementDocument<StatementInfo>) -> Void) {
+        parameter = (.none, .optional(title))
+        self.content = content
+    }
+}
+
+public struct StatementDocument<StatementInfo: StatementInfoProtocol>: EnclosedDocument {
+    public let innerDocument: Document
+    public let prefix: String? = nil
+    public init(innerDocument: Document) { self.innerDocument = innerDocument }
+}
+
 internal struct StatementHeader {
     let statement: Statement
     let name: String
