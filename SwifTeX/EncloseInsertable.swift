@@ -7,22 +7,28 @@
 //
 
 public protocol EncloseInsertableBase: InsertableBase {
-    associatedtype DocumentType: EnclosedDocument
+    associatedtype Specifier
     static var name: String { get }
-    var content: (DocumentType) -> Void { get }
+    var content: (EnclosedDocument<Specifier>) -> Void { get }
+    var documentPrefix: String? { get }
     var parameter: (left: EncloseParameter, right: EncloseParameter) { get }
     var prepare: ((Document) -> Void)? { get }
 }
 
-public protocol EnclosedDocument: DocumentProtocol {
-    init(innerDocument: Document)
+public struct EnclosedDocument<Specifier>: DocumentProtocol {
+    public let document: Document
+    public let prefix: String?
+    public init(innerDocument: Document, prefix: String? = nil) {
+        self.innerDocument = Document
+        self.prefix = prefix
+    }
 }
 
 public extension EncloseInsertableBase {
     public func insert(into document: Document) {
         prepare?(document)
         document.enclose(Self.name, parameter: parameter) {
-            content(Self.DocumentType(innerDocument: $0))
+            content(Self.DocumentType(innerDocument: $0, prefix: documentPrefix))
         }
     }
 }
