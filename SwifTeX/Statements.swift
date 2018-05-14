@@ -11,9 +11,10 @@ public protocol StatementInfoProtocol {
 }
 
 public struct StatementStruct<StatementInfo: StatementInfoProtocol>: EncloseInsertable {
-    public var content: (StatementDocument<StatementInfo>) -> Void
+    public let content: (StatementDocument<StatementInfo>) -> Void
     public static var name: String { return StatementInfo.statement.rawValue }
     public let parameter: (left: EncloseParameter, right: EncloseParameter)
+    public let prepare: ((Document) -> Void)? = { $0.setDefaultStatementHeader(StatementInfo.statement, overwrite: false) }
     public init(_ title: String, content: @escaping (StatementDocument<StatementInfo>) -> Void) {
         parameter = (.none, .optional(title))
         self.content = content
@@ -25,6 +26,15 @@ public struct StatementDocument<StatementInfo: StatementInfoProtocol>: EnclosedD
     public let prefix: String? = nil
     public init(innerDocument: Document) { self.innerDocument = innerDocument }
 }
+
+public struct TheoremInfo: StatementInfoProtocol { public static let statement = Statement.theorem }
+public struct CorollaryInfo: StatementInfoProtocol { public static let statement = Statement.corollary }
+public struct LemmaInfo: StatementInfoProtocol { public static let statement = Statement.lemma }
+
+public typealias Theorem = StatementStruct<TheoremInfo>
+public typealias Corollary = StatementStruct<CorollaryInfo>
+public typealias Lemma = StatementStruct<LemmaInfo>
+
 
 internal struct StatementHeader {
     let statement: Statement
@@ -68,6 +78,7 @@ internal extension Document {
     }
 }
 
+// TODO: Replace with Document-only StatementHeader types
 public extension DocumentProtocol {
     public func theoremHeader(name: String? = nil, sibling: Statement? = nil, parent: Numbered? = nil) {
         innerDocument.setStatementHeader(.theorem, overwrite: true, name: name, sibling: sibling, parent: parent)
@@ -78,19 +89,15 @@ public extension DocumentProtocol {
     public func lemmaHeader(name: String? = nil, sibling: Statement? = nil, parent: Numbered? = nil) {
         innerDocument.setStatementHeader(.lemma, overwrite: true, name: name, sibling: sibling, parent: parent)
     }
-    
-    public func theorem(_ title: String? = nil, closure: (Document) -> Void) { innerDocument.statement(.theorem, title: title, closure: closure) }
-    public func corollary(_ title: String? = nil, closure: (Document) -> Void) { innerDocument.statement(.corollary, title: title, closure: closure) }
-    public func lemma(_ title: String? = nil, closure: (Document) -> Void) { innerDocument.statement(.lemma, title: title, closure: closure) }
-    
-    public func theorem(_ title: String? = nil, _ statement: String) { theorem(title, closure: { $0 <- statement }) }
-    public func corollary(_ title: String? = nil, _ statement: String) { corollary(title, closure: { $0 <- statement }) }
-    public func lemma(_ title: String? = nil, _ statement: String) { lemma(title, closure: { $0 <- statement }) }
-    
 }
 
-public extension DocumentProtocol {
-    public func proof(closure: (Document) -> Void) {
-        innerDocument.enclose("proof", closure: closure)
+public struct Proof: EncloseInsertable {
+    public let content: (ProofDocument) -> Void
+    public static let name = "proof"
+    public let parameter: (left: EncloseParameter, right: EncloseParameter)
+    public let prepare: ((Document) -> Void)? = nil
+    public init(_ title: String, content: @escaping (ProofDocument) -> Void) {
+        parameter = (.none, .optional(title))
+        self.content = content
     }
 }
