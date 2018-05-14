@@ -33,14 +33,15 @@ struct DeterminantIdentityPaper {
         )
         doc <- Section("The Lindström–Gessel–Viennot Lemma") {
             $0 <- Subsection("General Statement and Proof") {
-                $0 <- Theorem(
-                    "The Lindström–Gessel–Viennot lemma",
-                    """
+                $0 <- Theorem("The Lindström–Gessel–Viennot lemma") {
+                    $0 <- """
                     Let \(G) be a directed acyclic graph, and let \(a.sub(1, to: n)), \(b.sub(1, to: n)) (\(n ≥ 1)) be distinct vertices of \(G) so that the set \(P.sub(i,j)) of directed paths between \(a.sub(i)) and \(b.sub(j)) is finite for all \([i,j].isIn(.set(1, to: n))). For every permutation \(sigma) of \(Math.set(1, to: n)), let \(QQ.sub(sigma)) denote the set of all tuples of non-intersecting (no two of them share a vertex) paths in \(P.sub([1,sigma.of(1)], timesTo:[n,sigma.of(n)])). Then
-                    \(§[ P.sub(i,j).abs.det(for: 1 ≤ [i,j] ≤ n) == .sum(sigma, of: .sign(sigma) * QQ.sub(sigma).abs) ].comma)
+                    """
+                    $0 <- §[ P.sub(i,j).abs.det(for: 1 ≤ [i,j] ≤ n) == .sum(sigma, of: .sign(sigma) * QQ.sub(sigma).abs) ].comma
+                    $0 <- """
                     where the sum is over all permutations \(sigma) of \(Math.set(1, to: n)).
                     """
-                )
+                }
                 $0 <- Proof {
                     $0 <- """
                     Denote \(PP.sub(sigma) <- P.sub([1,sigma.of(1)], timesTo:[n,sigma.of(n)])). By the definition of the determinant;
