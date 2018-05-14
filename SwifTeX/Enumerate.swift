@@ -10,7 +10,7 @@ public struct Enumerate: EncloseInsertable {
     public let content: (EnumerateDocument) -> Void
     public static let name = "enumerate"
     public var parameter: (left: EncloseParameter, right: EncloseParameter) { return (.none, .none) }
-    public var prepare: ((Document) -> Void)? = nil
+    public let prepare: ((Document) -> Void)? = nil
 }
 
 public struct EnumerateDocument: EnclosedDocument {
