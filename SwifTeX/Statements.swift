@@ -87,7 +87,7 @@ public extension DocumentProtocol {
 }
 
 public struct Proof: EncloseInsertable {
-    public let content: (ProofDocument) -> Void
+    public let content: (EnclosedDocument<Proof>) -> Void
     public static let name = "proof"
     public let parameter: (left: EncloseParameter, right: EncloseParameter)
     public let prepare: ((Document) -> Void)? = nil
