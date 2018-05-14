@@ -13,20 +13,15 @@ public protocol PartInfoProtocol {
 
 public struct PartStruct<PartInfo: PartInfoProtocol>: EncloseSubinsertable {
     public typealias Parent = PartInfo.Parent
-    public let content: (PartDocument<PartInfo>) -> Void
+    public let content: (EnclosedDocument<PartInfo>) -> Void
     public static var name: String { return PartInfo.part.rawValue }
+    public let documentPrefix: String? = nil
     public let parameter: (left: EncloseParameter, right: EncloseParameter)
     public let prepare: ((Document) -> Void)? = nil
     public init(_ title: String, content: @escaping (PartDocument<PartInfo>) -> Void) {
         parameter = (.none, .required(title))
         self.content = content
     }
-}
-
-public struct PartDocument<PartInfo: PartInfoProtocol>: EnclosedDocument {
-    public let innerDocument: Document
-    public let prefix: String? = nil
-    public init(innerDocument: Document) { self.innerDocument = innerDocument }
 }
 
 public struct ChapterInfo: PartInfoProtocol {
