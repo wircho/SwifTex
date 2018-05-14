@@ -22,6 +22,14 @@ public struct StatementStruct<StatementInfo: StatementInfoProtocol>: EncloseInse
     }
 }
 
+public extension StatementStruct {
+    public init(_ title: String, _ text: String) {
+        self.init(title) {
+            $0 <- text
+        }
+    }
+}
+
 public struct TheoremInfo: StatementInfoProtocol { public static let statement = Statement.theorem }
 public struct CorollaryInfo: StatementInfoProtocol { public static let statement = Statement.corollary }
 public struct LemmaInfo: StatementInfoProtocol { public static let statement = Statement.lemma }
