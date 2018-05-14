@@ -11,6 +11,7 @@ public protocol EncloseInsertableBase: InsertableBase {
     static var name: String { get }
     var content: (DocumentType) -> Void { get }
     var parameter: (left: EncloseParameter, right: EncloseParameter) { get }
+    var prepare: ((Document) -> Void)? { get }
 }
 
 public protocol EnclosedDocument: DocumentProtocol {
@@ -19,6 +20,7 @@ public protocol EnclosedDocument: DocumentProtocol {
 
 public extension EncloseInsertableBase {
     public func insert(into document: Document) {
+        prepare?(document)
         document.enclose(Self.name, parameter: parameter) {
             content(Self.DocumentType(innerDocument: $0))
         }
