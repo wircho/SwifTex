@@ -16,6 +16,7 @@ public struct PartStruct<PartInfo: PartInfoProtocol>: EncloseSubinsertable {
     public var content: (PartDocument<PartInfo>) -> Void
     public static var name: String { return PartInfo.part.rawValue }
     public let parameter: (left: EncloseParameter, right: EncloseParameter)
+    public let prepare: ((Document) -> Void)? = nil
     public init(_ title: String, content: @escaping (PartDocument<PartInfo>) -> Void) {
         parameter = (.none, .required(title))
         self.content = content
