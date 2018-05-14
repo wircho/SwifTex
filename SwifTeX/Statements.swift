@@ -11,12 +11,12 @@ public protocol StatementInfoProtocol {
 }
 
 public struct StatementStruct<StatementInfo: StatementInfoProtocol>: EncloseInsertable {
-    public let content: (EnclosedDocument<StatementInfo>) -> Void
+    public let content: (DocumentType) -> Void
     public static var name: String { return StatementInfo.statement.rawValue }
     public let documentPrefix: String? = nil
     public let parameter: (left: EncloseParameter, right: EncloseParameter)
     public let prepare: ((Document) -> Void)? = { $0.setDefaultStatementHeader(StatementInfo.statement, overwrite: false) }
-    public init(_ title: String, content: @escaping (EnclosedDocument<StatementInfo>) -> Void) {
+    public init(_ title: String, content: @escaping (DocumentType) -> Void) {
         parameter = (.none, .optional(title))
         self.content = content
     }
