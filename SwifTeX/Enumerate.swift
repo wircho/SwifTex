@@ -19,7 +19,7 @@ public struct Number {
 }
 
 extension Number: Subinsertable {
-    public typealias Parent = EnumerateDocument
+    public typealias Parent = EnclosedDocument<Enumerate>
     public func insert(into document: Document) {
         content(NumberDocument(innerDocument: document))
     }

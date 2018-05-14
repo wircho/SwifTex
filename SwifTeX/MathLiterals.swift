@@ -36,6 +36,7 @@ internal extension Math.Literal {
     internal static let space = Math.Literal.symbol("\\,")
     internal static let colon = Math.Literal.symbol(":")
     
+    internal static let neq = Math.Literal.backslash("neq", renderEnd: (.symbol, .symbol))
     internal static let leq = Math.Literal.backslash("leq", renderEnd: (.symbol, .symbol))
     internal static let geq = Math.Literal.backslash("geq", renderEnd: (.symbol, .symbol))
     internal static let times = Math.Literal.backslash("times", renderEnd: (.symbol, .symbol))

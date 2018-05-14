@@ -10,6 +10,7 @@ private let j: Math = "j"
 private let k: Math = "k"
 private let l: Math = "l"
 private let n: Math = "n"
+private let p: Math = "p"
 private let P: Math = "P"
 private let PP = Math.cal("P")
 private let QQ = Math.cal("Q")
@@ -57,7 +58,7 @@ struct DeterminantIdentityPaper {
                     $0 <- """
                     This would ensure that the elements of \(PP - QQ) come in pairs of opposite signs. One such function \(f) may be defined as follows:
                     
-                    For a tuple \(pp == .tuple(p.sub(1, to: n)).isIn(PP.sub(sigma) - QQ.sub(sigma))), let \(i) be the smallest non-negative integer for which \(p.sub(i)) intersects another path in the tuple, and let \(j != i) be the smallest non-negative integer so that \(p.sub(i)) intersects \(p.sub(j)). Let \(v) be the first vertex of \(p.sub(i)) that is also in \(p.sub(j)). Construct \(f.of(pp)) by
+                    For a tuple \(pp == Math.tuple(p.sub(1, to: n)).isIn(PP.sub(sigma) - QQ.sub(sigma))), let \(i) be the smallest non-negative integer for which \(p.sub(i)) intersects another path in the tuple, and let \(j != i) be the smallest non-negative integer so that \(p.sub(i)) intersects \(p.sub(j)). Let \(v) be the first vertex of \(p.sub(i)) which is also in \(p.sub(j)). Construct \(f.of(pp)) by
                     """
                 }
             }

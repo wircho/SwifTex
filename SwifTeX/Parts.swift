@@ -18,7 +18,7 @@ public struct PartStruct<PartInfo: PartInfoProtocol>: EncloseSubinsertable {
     public let documentPrefix: String? = nil
     public let parameter: (left: EncloseParameter, right: EncloseParameter)
     public let prepare: ((Document) -> Void)? = nil
-    public init(_ title: String, content: @escaping (PartDocument<PartInfo>) -> Void) {
+    public init(_ title: String, content: @escaping (EnclosedDocument<PartInfo>) -> Void) {
         parameter = (.none, .required(title))
         self.content = content
     }
@@ -30,12 +30,12 @@ public struct ChapterInfo: PartInfoProtocol {
 }
 
 public struct SectionInfo: PartInfoProtocol {
-    public typealias Parent = PartDocument<ChapterInfo>
+    public typealias Parent = EnclosedDocument<ChapterInfo>
     public static var part = Part.section
 }
 
 public struct SubsectionInfo: PartInfoProtocol {
-    public typealias Parent = PartDocument<SectionInfo>
+    public typealias Parent = EnclosedDocument<SectionInfo>
     public static var part = Part.subsection
 }
 

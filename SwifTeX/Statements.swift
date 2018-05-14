@@ -16,7 +16,7 @@ public struct StatementStruct<StatementInfo: StatementInfoProtocol>: EncloseInse
     public let documentPrefix: String? = nil
     public let parameter: (left: EncloseParameter, right: EncloseParameter)
     public let prepare: ((Document) -> Void)? = { $0.setDefaultStatementHeader(StatementInfo.statement, overwrite: false) }
-    public init(_ title: String, content: @escaping (StatementDocument<StatementInfo>) -> Void) {
+    public init(_ title: String, content: @escaping (EnclosedDocument<StatementInfo>) -> Void) {
         parameter = (.none, .optional(title))
         self.content = content
     }
@@ -97,10 +97,11 @@ public extension DocumentProtocol {
 public struct Proof: EncloseInsertable {
     public let content: (EnclosedDocument<Proof>) -> Void
     public static let name = "proof"
+    public let documentPrefix: String? = nil
     public let parameter: (left: EncloseParameter, right: EncloseParameter)
     public let prepare: ((Document) -> Void)? = nil
-    public init(_ title: String, content: @escaping (ProofDocument) -> Void) {
-        parameter = (.none, .optional(title))
+    public init(_ title: String? = nil, content: @escaping (EnclosedDocument<Proof>) -> Void) {
+        parameter = (.none, title.map { .optional($0) } ?? .none)
         self.content = content
     }
 }

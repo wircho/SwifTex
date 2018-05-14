@@ -20,7 +20,7 @@ public struct Item {
 }
 
 extension Item: Subinsertable {
-    public typealias Parent = ItemizeDocument
+    public typealias Parent = EnclosedDocument<Itemize>
     public func insert(into document: Document) {
         if let name = name { document <!- "[\(name)]" }
         content(ItemDocument(innerDocument: document))

@@ -16,10 +16,10 @@ public protocol EncloseInsertableBase: InsertableBase {
 }
 
 public struct EnclosedDocument<Specifier>: DocumentProtocol {
-    public let document: Document
+    public let innerDocument: Document
     public let prefix: String?
     public init(innerDocument: Document, prefix: String? = nil) {
-        self.innerDocument = Document
+        self.innerDocument = innerDocument
         self.prefix = prefix
     }
 }
@@ -28,7 +28,7 @@ public extension EncloseInsertableBase {
     public func insert(into document: Document) {
         prepare?(document)
         document.enclose(Self.name, parameter: parameter) {
-            content(Self.DocumentType(innerDocument: $0, prefix: documentPrefix))
+            content(EnclosedDocument<Specifier>(innerDocument: $0, prefix: documentPrefix))
         }
     }
 }
