@@ -13,7 +13,7 @@ public protocol PartInfoProtocol {
 
 public struct PartStruct<PartInfo: PartInfoProtocol>: EncloseSubinsertable {
     public typealias Parent = PartInfo.Parent
-    public var content: (PartDocument<PartInfo>) -> Void
+    public let content: (PartDocument<PartInfo>) -> Void
     public static var name: String { return PartInfo.part.rawValue }
     public let parameter: (left: EncloseParameter, right: EncloseParameter)
     public let prepare: ((Document) -> Void)? = nil
