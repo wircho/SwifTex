@@ -132,6 +132,8 @@ extension Math: CustomStringConvertible {
     }
 }
 
+extension Math: StringInsertable { }
+
 public struct PrintedMath: CustomStringConvertible {
     internal let math: Math
     internal let ending: String
@@ -140,6 +142,8 @@ public struct PrintedMath: CustomStringConvertible {
         return literal(math.begin + math.content.code + ending + math.end)
     }
 }
+
+extension PrintedMath: StringInsertable { }
 
 public extension Math {
     public var comma: PrintedMath {
