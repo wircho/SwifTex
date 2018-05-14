@@ -7,16 +7,11 @@
 //
 
 public struct Itemize: EncloseInsertable {
-    public let content: (ItemizeDocument) -> Void
+    public let content: (EnclosedDocument<Itemize>) -> Void
     public static let name = "itemize"
-    public var parameter: (left: EncloseParameter, right: EncloseParameter) { return (.none, .none) }
+    public let documentPrefix = "\\item"
+    public let parameter: (left: EncloseParameter, right: EncloseParameter) = (.none, .none)
     public let prepare: ((Document) -> Void)? = nil
-}
-
-public struct ItemizeDocument: EnclosedDocument {
-    public let innerDocument: Document
-    public let prefix: String? = "\\item"
-    public init(innerDocument: Document) { self.innerDocument = innerDocument }
 }
 
 public struct Item {
