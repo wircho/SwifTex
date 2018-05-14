@@ -10,6 +10,7 @@ public struct Itemize: EncloseInsertable {
     public let content: (ItemizeDocument) -> Void
     public static let name = "itemize"
     public var parameter: (left: EncloseParameter, right: EncloseParameter) { return (.none, .none) }
+    public var prepare: ((Document) -> Void)? = nil
 }
 
 public struct ItemizeDocument: EnclosedDocument {
