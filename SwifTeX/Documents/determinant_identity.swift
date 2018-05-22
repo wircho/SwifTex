@@ -50,7 +50,7 @@ struct DeterminantIdentityPaper {
                     \(§[ .sum(pp.isIn(PP), of: .sign(pp))
                     *=* .sum(pp.isIn(QQ), of: .sign(pp)) + .sum(pp.isIn(PP - QQ), of: .sign(pp))
                     *=* .sum(sigma, of: .sign(sigma) * QQ.sub(sigma).abs) + .sum(pp.isIn(PP - QQ), of: .sign(pp)) ].period)
-                    It is thus sufficient to prove that the last sum equals zero. One way to do this is by showing the existence of a sign-reversing involution on \(PP - QQ). That is, a function \(f.function(from: PP - QQ, to: PP - QQ)) satisfying:
+                    It is thus sufficient to show that the last sum equals zero. One way to do this is by proving the existence of a sign-reversing involution on \(PP - QQ). That is, a function \(f.function(from: PP - QQ, to: PP - QQ)) satisfying:
                     """
                     $0 <- Enumerate {
                         $0 <- "\(Math.sign.of(f.of(pp)) == -.sign(pp)) for all \(pp.isIn(PP - QQ))"
@@ -61,7 +61,13 @@ struct DeterminantIdentityPaper {
                     
                     For a tuple \(pp == Math.tuple(p.sub(1, to: n)).isIn(PP.sub(sigma) - QQ.sub(sigma))), let \(i) be the smallest non-negative integer for which \(p.sub(i)) intersects another path in the tuple, and let \(v) be the first vertex of \(p.sub(i)) which is also in another path \(p.sub(j)). If more than one other path contains \(v), the smallest \(j) is chosen. Construct \(f.of(pp)) by switching the paths \(p.sub(i)) and \(p.sub(j)) beyond the vertex \(v), so that \(pp.prime <- f.of(pp)) satisfies \(p.sub(i).prime.isIn(P.sub(i,sigma.of(j)))) and \(p.sub(j).prime.isIn(P.sub(j,sigma.of(i)))). The tuple \(f.of(pp)) is thus in the set \(PP.sub(sigma © .round(i * j))), where \(Math.round(i*j)) is the permutation swapping \(i) and \(j). And so its sign is \(-Math.sign(sigma) == -.sign(pp)).
                     
-                    It only remains to show that \(f.of(pp.prime) == pp). Because \(pp) and \(pp.prime) share all paths but the \(i)-th and \(j)-th, \(i) is the smallest non-negative integer such that \(p.sub(i).prime) intersects another path from \(pp.prime), and \(j) is the smallest number different from \(i) for which \(p.prime.sub(j)) contains \(v). Hence \(f.of(pp.prime)) is constructed by swapping \(pp.prime.sub(i)) and \(pp.prime.sub(j)) beyond \(v), thus restoring \(pp) as wanted.
+                    """
+//                    $0 <- Tikz {
+//                        $0 <-
+//                    }
+                    $0 <- """
+                    
+                    It only remains to argue that \(f.of(pp.prime) == pp). Because \(pp) and \(pp.prime) share all paths but the \(i)-th and \(j)-th, \(i) is the smallest non-negative integer such that \(p.sub(i).prime) intersects another path from \(pp.prime). It does so first at \(v), and \(j) is the smallest number different from \(i) for which \(p.prime.sub(j)) contains \(v). Hence \(f.of(pp.prime)) is constructed by swapping \(pp.prime.sub(i)) and \(pp.prime.sub(j)) beyond \(v), hence restoring \(pp) as wanted.
                     """
                 }
             }
@@ -72,12 +78,13 @@ struct DeterminantIdentityPaper {
                 """
                 
                 $0 <- Tikz {
-                    $0 <- .init(fill: .green) | (2, 2) -- (2, 3) -- (3, 3) -- (3, 2) -- .arc((3, 2), 0, 90, 7.milimeters) -- (2, 2)
+                    $0 <- .init(fill: .green) | (2, 2) -- (2, 3) -- (3, 3) -- (3, 2) -- .arc((3, 2), 0, 90, 7.milimeters) -- .node((2, 2), .circle, line: .purple, fill: .yellow, anchor: .north, 1 + 2)
                     $0 <- .init(2.points, .dashed, line: .blue, fill: .red) | (0, 0) -- (5.points, 30.points) -- (5,0)
                     $0 <- 3.points | .circle((0,0), 1)
                     $0 <- .init(2.points, .dashed, fill: .yellow) | .circle((0,0), 0.5)
                     $0 <- .circle((0,0), 0.25)
                     $0 <- .ellipse((0,0), 0.25, 0.1)
+                    $0 <- .init(2.points, line: .purple) | .curve((0,0), (1,1), (5,0), (3,3))
                 }
             }
             

@@ -22,4 +22,5 @@ public struct TikzArc {
 
 extension TikzArc: TikzItem {
     public var description: String { return "(\(start.0), \(start.1)) arc (\(angle0):\(angle1):\(radius))" }
+    public var headers: [String] { return [] }
 }

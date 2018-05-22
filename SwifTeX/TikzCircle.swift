@@ -19,4 +19,5 @@ public struct TikzCircle {
 extension TikzCircle: TikzItem {
     public var start: TikzPoint.Raw { return center }
     public var description: String { return "(\(center.0), \(center.1)) circle (\(radius))" }
+    public var headers: [String] { return [] }
 }
