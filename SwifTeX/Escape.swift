@@ -10,7 +10,7 @@ import Cocoa
 
 private let literalEncloser = "@@@"
 private let literalRegex = try! NSRegularExpression(pattern: "(\n|^)[ \\t\\f\\r]*" + literalEncloser + "[ \\t\\f\\r]*(\n|$)")
-private let normalizedLiteralEncloser = "\n" + literalEncloser + "\n"
+internal let normalizedLiteralEncloser = "\n" + literalEncloser + "\n"
 
 internal func forceEscape(_ text: String) -> String {
     return text.replacingOccurrences(of: "\\", with: "\\\\")

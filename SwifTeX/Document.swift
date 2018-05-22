@@ -14,7 +14,8 @@ public class Document {
     public let `class`: Class
     public let path: String?
     
-    internal var headers: Set<String> = ["\\usepackage{amsthm}"]
+    //TODO: Add a prepare method to StringConvertible
+    internal var headers: Set<String> = ["\\usepackage{amsthm}", "\\usepackage{tikz}"]
     internal var statementHeaders: [StatementHeader] = []
     
     public internal(set) var innerContent = ""
