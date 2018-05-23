@@ -20,5 +20,6 @@ extension TikzPoint: TikzItem {
     public typealias Raw = (LengthProtocol, LengthProtocol)
     public var start: Raw { return (x, y) }
     public var description: String { return "(\(x), \(y))" }
+    public var headers: [String] { return [] }
 }
 

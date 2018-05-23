@@ -35,6 +35,9 @@
 		3E9214C320AA6693000F0FD0 /* Tikz.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9214C220AA6693000F0FD0 /* Tikz.swift */; };
 		3E98FBE8209B6360005A8D53 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E98FBE7209B6360005A8D53 /* main.swift */; };
 		3E98FBEF209B6372005A8D53 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E98FBEE209B6372005A8D53 /* Document.swift */; };
+		3E9C87CA20B46E62001FBFE9 /* TikzCurve.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9C87C920B46E62001FBFE9 /* TikzCurve.swift */; };
+		3E9C87CC20B477E4001FBFE9 /* TikzNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9C87CB20B477E4001FBFE9 /* TikzNode.swift */; };
+		3E9C87CE20B4A018001FBFE9 /* TikzColorful.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9C87CD20B4A018001FBFE9 /* TikzColorful.swift */; };
 		3EE5ECE5209D0E1300914E9F /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE5ECE4209D0E1300914E9F /* Enums.swift */; };
 		3EE5ECE7209D108300914E9F /* SaveCompileOpen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE5ECE6209D108300914E9F /* SaveCompileOpen.swift */; };
 		3EE5ECE9209D112600914E9F /* Escape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE5ECE8209D112600914E9F /* Escape.swift */; };
@@ -87,6 +90,9 @@
 		3E98FBE7209B6360005A8D53 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		3E98FBEE209B6372005A8D53 /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
 		3E98FBF3209B6A6B005A8D53 /* determinant_identity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = determinant_identity.swift; sourceTree = "<group>"; };
+		3E9C87C920B46E62001FBFE9 /* TikzCurve.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TikzCurve.swift; sourceTree = "<group>"; };
+		3E9C87CB20B477E4001FBFE9 /* TikzNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TikzNode.swift; sourceTree = "<group>"; };
+		3E9C87CD20B4A018001FBFE9 /* TikzColorful.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TikzColorful.swift; sourceTree = "<group>"; };
 		3EE5ECE4209D0E1300914E9F /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		3EE5ECE6209D108300914E9F /* SaveCompileOpen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveCompileOpen.swift; sourceTree = "<group>"; };
 		3EE5ECE8209D112600914E9F /* Escape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Escape.swift; sourceTree = "<group>"; };
@@ -154,6 +160,7 @@
 				3E24861420A53A8A000788AB /* MathMethods.swift */,
 				3E60398820A381B000743C7F /* MathFunctions.swift */,
 				3E9214C220AA6693000F0FD0 /* Tikz.swift */,
+				3E9C87CD20B4A018001FBFE9 /* TikzColorful.swift */,
 				3E5A096120ACB56D00760B42 /* TikzStyle.swift */,
 				3E5A096920B3C0AF00760B42 /* TikzPath.swift */,
 				3E5A096520ADF95D00760B42 /* TikzItem.swift */,
@@ -161,6 +168,8 @@
 				3E5A095F20ACAE2800760B42 /* TikzCircle.swift */,
 				3E5A096320ADDC6F00760B42 /* TikzEllipse.swift */,
 				3E5A096B20B3C6C600760B42 /* TikzArc.swift */,
+				3E9C87C920B46E62001FBFE9 /* TikzCurve.swift */,
+				3E9C87CB20B477E4001FBFE9 /* TikzNode.swift */,
 				3E5A095D20AB7C7C00760B42 /* TikzOperators.swift */,
 				3E98FBF2209B6A6B005A8D53 /* Documents */,
 			);
@@ -238,6 +247,8 @@
 				3E60397520A0A88F00743C7F /* Math.swift in Sources */,
 				3E60397F20A3565200743C7F /* MathBrackets.swift in Sources */,
 				3E5A096620ADF95D00760B42 /* TikzItem.swift in Sources */,
+				3E9C87CA20B46E62001FBFE9 /* TikzCurve.swift in Sources */,
+				3E9C87CC20B477E4001FBFE9 /* TikzNode.swift in Sources */,
 				3EE5ECE9209D112600914E9F /* Escape.swift in Sources */,
 				3E60398920A381B000743C7F /* MathFunctions.swift in Sources */,
 				3E2DF06720A4C4AC00D459A4 /* MathLiteralExpressible.swift in Sources */,
@@ -250,6 +261,7 @@
 				3E9214C120AA430D000F0FD0 /* StringInsertable.swift in Sources */,
 				3E98FBEF209B6372005A8D53 /* Document.swift in Sources */,
 				3E322633209CEA730020FB23 /* determinant_identity.swift in Sources */,
+				3E9C87CE20B4A018001FBFE9 /* TikzColorful.swift in Sources */,
 				3E68573920A4C59700516993 /* MathContent.swift in Sources */,
 				3EE5ECEB209D121700914E9F /* Insertable.swift in Sources */,
 				3EE5ECF1209E879F00914E9F /* Parts.swift in Sources */,

@@ -21,4 +21,5 @@ public struct TikzEllipse {
 extension TikzEllipse: TikzItem {
     public var start: TikzPoint.Raw { return center }
     public var description: String { return "(\(center.0), \(center.1)) ellipse (\(radius0) and \(radius1))" }
+    public var headers: [String] { return [] }
 }

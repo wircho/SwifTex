@@ -13,11 +13,24 @@ public enum TikzModifier: String {
     case dotted
 }
 
+private var colorCounter = 0
+internal struct ColorNamer {
+    let line: String
+    let fill: String
+    init() {
+        line = "line_\(colorCounter)"
+        fill = "fill_\(colorCounter)"
+        colorCounter += 1
+    }
+}
+
 public struct TikzStyle {
     public var lineWidth: LengthProtocol?
     public var modifier: TikzModifier?
     public var lineColor: NSColor?
     public var fillColor: NSColor?
+    public var extraHeaders: [String] = []
+    internal let colorNamer = ColorNamer()
     
     public init(_ lineWidth: LengthProtocol? = nil, _ modifier: TikzModifier? = nil, line lineColor: NSColor? = nil, fill fillColor: NSColor? = nil) {
         self.lineWidth = lineWidth
@@ -31,7 +44,7 @@ public extension TikzStyle {
     public static let none = TikzStyle()
 }
 
-private extension NSColor {
+internal extension NSColor {
     var tuple: (red: Float, green: Float, blue: Float) {
         var red: CGFloat = 0
         var green: CGFloat = 0
@@ -47,19 +60,19 @@ private extension NSColor {
     }
 }
 
-private let fillColorName = "fill_color"
-private let lineColorName = "draw_color"
-public extension TikzStyle {
-    private var colorsDescription: String {
-        return [fillColor.map{ "\\definecolor{\(fillColorName)}{rgb}{\($0.tupleString)}" }, lineColor.map{ "\\definecolor{\(lineColorName)}{rgb}{\($0.tupleString)}" }].compactMap{ $0.map{ $0 + "\n" } }.joined(separator: "")
+extension TikzStyle: TikzColorful {
+    private func headers(for path: TikzPath) -> String {
+        var headers = self.colorHeaders
+        for item in path.items { headers += item.headers }
+        return headers.map{ $0 + "\n" }.joined(separator: "")
     }
     
     private var paramsDescription: String {
-        let params = [lineWidth.map { "line width = \($0)" }, fillColor.map { _ in "fill = \(fillColorName)" }, lineColor.map { _ in "draw = \(lineColorName)" }, modifier.map { $0.rawValue }].compactMap{ $0 }
+        let params = ([lineWidth.map { "line width = \($0)" }] + colorDescriptions as [String?]  + [modifier.map { $0.rawValue }]).compactMap{ $0 }
         return params.count == 0 ? "" : "[" + params.joined(separator: ", ") + "]"
     }
     
-    public var drawPrefix: String {
-        return colorsDescription + "\\draw" + paramsDescription
+    public func drawPrefix(for path: TikzPath) -> String {
+        return headers(for: path) + "\\draw" + paramsDescription
     }
 }

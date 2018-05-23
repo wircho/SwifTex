@@ -24,6 +24,6 @@ public extension TikzPath {
 
 extension TikzPath: TikzElement {
     public var elementCode: String {
-        return style.drawPrefix + " " + items.map{ $0.description }.joined(separator: " -- ") + ";"
+        return style.drawPrefix(for: self) + " " + items.map{ $0.description }.joined(separator: " -- ") + ";"
     }
 }
